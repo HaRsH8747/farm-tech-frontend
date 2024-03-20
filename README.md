@@ -24,7 +24,7 @@ git pull
 
 2. pick a feature and create a branch. suppose dashboard
 ```bash
-git checkout -b 'reza_dashboard'
+git checkout -b 'dashboard'
 git add .
 git commit -m "completed dashboard"
 ```
@@ -34,5 +34,5 @@ git commit -m "completed dashboard"
 git checkout main
 git fetch
 git pull
-git merge reza_dashboard
+git merge dashboard
 ```
