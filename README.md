@@ -83,3 +83,29 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+## Git operations
+
+1. before you start your work, you will go to the main branch and you will pull the latest main branch:
+```bash
+git checkout main
+git fetch
+git pull
+```
+
+2. pick a feature and create a branch. suppose dashboard
+```bash
+git checkout -b 'reza_dashboard'
+git add .
+git commit -m "completed dashboard"
+```
+
+3. then merge it with main
+```bash
+git checkout main
+git fetch
+git pull
+git merge reza_dashboard
+```
