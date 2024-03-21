@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 
-
 import {
   Card,
   CardBody,
@@ -21,7 +20,7 @@ import featuresData from "./data/features-data";
 import teamData from "./data/team-data";
 import contactData from "./data/contact-data";
 import PageTitle from "./layout/page-title";
-import ExploreButton from "./components/explore-button";
+// import ExploreButton from "./components/explore-button";
 
 export function Home() {
   const videoRef = useRef(null);
@@ -45,19 +44,27 @@ export function Home() {
   }, []);
 
   const NavContainer = styled.div`
-  flex-grow: 1;
-  text-align: center;
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  height: 100%; /* Fill the height of the parent */
-`;
+    flex-grow: 1;
+    text-align: center;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100%; /* Fill the height of the parent */
+  `;
 
   return (
     <>
       <div className="relative flex h-screen content-center items-center justify-center pt-16 pb-32">
         {/* <div className="absolute top-0 h-full w-full bg-[url('../public/img/background-3.png')] bg-cover bg-center" /> */}
-        <video ref={videoRef} className="absolute top-0 h-auto w-full bg-cover bg-center" controls autoPlay loop muted playsInline>
+        <video
+          ref={videoRef}
+          className="absolute top-0 h-auto w-full bg-cover bg-center"
+          controls
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
           <source src="/video/bg_video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
@@ -68,16 +75,22 @@ export function Home() {
               <Typography
                 variant="h1"
                 color="white"
-                className="mb-6 font-black"
+                className="text-7xl font-black"
               >
-                Your story starts with us.
+                Cultivating Connections, Harvesting Prosperity
               </Typography>
-              <Typography variant="lead" color="white" className="opacity-80">
-                This is a simple example of a Landing Page you can build using
-                Material Tailwind. It features multiple components based on the
-                Tailwind CSS and Material Design by Google.
+              <Typography
+                variant="lead"
+                color="white"
+                className="opacity-80"
+                style={{ margin: "20px", fontSize: "15px" }}
+              >
+                Join us on a transformative journey into the intricate world of
+                life, where fertile land meets purposeful cultivation. Together,
+                we sow the seeds of prosperity, nurturing sustainable growth and
+                shared abundance.
               </Typography>
-              <NavContainer><ExploreButton/></NavContainer>
+              {/* <NavContainer><ExploreButton/></NavContainer> */}
             </div>
           </div>
         </div>
@@ -85,17 +98,22 @@ export function Home() {
       <section className="-mt-32 bg-white px-4 pb-20 pt-4">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {featuresData.map(({ color, title, icon, description }) => (
-              <FeatureCard
-                key={title}
-                color={color}
-                title={title}
-                icon={React.createElement(icon, {
-                  className: "w-5 h-5 text-white",
-                })}
-                description={description}
-              />
-            ))}
+            {featuresData.map(
+              ({ color, title, icon, description }) => (
+                console.log(icon),
+                (
+                  <FeatureCard
+                    key={title}
+                    color={color}
+                    title={title}
+                    icon={React.createElement(icon, {
+                      className: "w-5 h-5 text-white",
+                    })}
+                    description={description}
+                  />
+                )
+              )
+            )}
           </div>
           <div className="mt-32 flex flex-wrap items-center">
             <div className="mx-auto -mt-8 w-full px-4 md:w-5/12">
@@ -106,47 +124,63 @@ export function Home() {
                 variant="h3"
                 className="mb-3 font-bold"
                 color="blue-gray"
+                style={{ marginTop: "20px", fontSize: "35px" }}
               >
-                Working with us is a pleasure
+                Our Goal
               </Typography>
               <Typography className="mb-8 font-normal text-blue-gray-500">
-                Don't let your uses guess by attaching tooltips and popoves to
-                any element. Just make sure you enable them first via
-                JavaScript.
+                In the heart of our mission lies the commitment to nurturing a
+                community where land and ambition thrive in unison. We are
+                building a platform that transforms every idle acre into a
+                beacon of sustainability and every harvest into a triumph of
+                shared prosperity. Our endeavor is to create a robust network
+                that extends from the soil to the dining table, guaranteeing
+                that the diligent work of every farmer is met with just rewards.
                 <br />
                 <br />
-                The kit comes with three pre-built pages to help you get started
-                faster. You can change the text and images and you're good to
-                go. Just make sure you enable them first via JavaScript.
+                At the forefront of our objectives is the battle against hunger,
+                striving to achieve the Sustainable Development Goal of zero
+                hunger. By integrating advanced digital storage solutions and
+                providing precise crop recommendations through market and
+                demographic analysis, we are paving the path to a future where
+                food security is guaranteed for everyone.
               </Typography>
               <Button variant="filled">read more</Button>
             </div>
             <div className="mx-auto mt-24 flex w-full justify-center px-4 md:w-4/12 lg:mt-0">
-              <Card className="shadow-lg border shadow-gray-500/10 rounded-lg">
-                <CardHeader floated={false} className="relative h-56">
-                  <img
-                    alt="Card Image"
-                    src="../public/img/teamwork.png"
-                    className="h-full w-full"
-                  />
-                </CardHeader>
-                <CardBody>
-                  <Typography variant="small" color="blue-gray" className="font-normal">Enterprise</Typography>
-                  <Typography
-                    variant="h5"
-                    color="blue-gray"
-                    className="mb-3 mt-2 font-bold"
-                  >
-                    Top Notch Services
-                  </Typography>
-                  <Typography className="font-normal text-blue-gray-500">
-                    The Arctic Ocean freezes every winter and much of the
-                    sea-ice then thaws every summer, and that process will
-                    continue whatever happens.
-                  </Typography>
-                </CardBody>
-              </Card>
-            </div>
+  <Card className="shadow-lg border shadow-gray-500/10 rounded-lg">
+    <CardHeader floated={false} className="relative h-56">
+      <img
+        alt="Card Image"
+        src="/img/happy.jpg"
+        className="object-cover h-full w-full rounded-t-lg"
+        style={{ objectPosition: "center top" }}
+      />
+    </CardHeader>
+    <CardBody>
+      <Typography
+        variant="small"
+        color="blue-gray"
+        className="font-normal"
+      >
+        Enterprise
+      </Typography>
+      <Typography
+        variant="h5"
+        color="blue-gray"
+        className="mb-3 mt-2 font-bold"
+      >
+        Top Notch Services
+      </Typography>
+      <Typography className="font-normal text-blue-gray-500">
+        The Arctic Ocean freezes every winter and much of the
+        sea-ice then thaws every summer, and that process will
+        continue whatever happens.
+      </Typography>
+    </CardBody>
+  </Card>
+</div>
+                    
           </div>
         </div>
       </section>

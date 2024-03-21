@@ -28,7 +28,7 @@ const NavContainer = styled.div`
 
 const MainHeader = styled.header`
   padding: 0 4.8rem;
-  height: 10rem;
+  height: 8 rem;
   background-color: ${({ theme }) => theme.colors.nav_bg};
   display: flex;
   justify-content: space-between;

@@ -19,7 +19,7 @@ const App = () => {
       white: "#fff",
       black: " #212529",
       helper: "#8490ff",
-      nav_bg: "#1D7934",
+      nav_bg: "#294B29",
 
       bg: "#F6F8FA",
       footer_bg: "#0a1435",
