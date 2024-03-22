@@ -128,6 +128,14 @@ const Nav = () => {
         </li>
         <li>
           <NavLink
+            to="/products"
+            className="nav-link nav-link-ltr navbar-link"
+            onClick={() => setMenuIcon(false)}>
+            Digital Storage
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
             to="/about"
             className="nav-link nav-link-ltr navbar-link"
             onClick={() => setMenuIcon(false)}

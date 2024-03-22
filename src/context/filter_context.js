@@ -11,12 +11,9 @@ const initialState = {
   sorting_value: "lowest",
   filters: {
     text: "",
-    category: "all",
-    company: "all",
-    color: "all",
-    maxPrice: 0,
-    price: 0,
-    minPrice: 0,
+    city: "",
+    province: "",
+    land_size: ""
   },
 };
 
@@ -24,16 +21,6 @@ export const FilterContextProvider = ({ children }) => {
   const { products } = useProductContext();
 
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  // to set the grid view
-  const setGridView = () => {
-    return dispatch({ type: "SET_GRID_VIEW" });
-  };
-
-  // to set the list view
-  const setListView = () => {
-    return dispatch({ type: "SET_LIST_VIEW" });
-  };
 
   // sorting function
   const sorting = (event) => {
@@ -62,6 +49,7 @@ export const FilterContextProvider = ({ children }) => {
 
   // to load all the products for grid and list view
   useEffect(() => {
+
     dispatch({ type: "LOAD_FILTER_PRODUCTS", payload: products });
   }, [products]);
 
@@ -69,8 +57,6 @@ export const FilterContextProvider = ({ children }) => {
     <FilterContext.Provider
       value={{
         ...state,
-        setGridView,
-        setListView,
         sorting,
         updateFilterValue,
         clearFilters,

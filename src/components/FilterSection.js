@@ -6,7 +6,7 @@ import { Button } from "../styles/Button";
 
 const FilterSection = () => {
   const {
-    filters: { text, category, color, price, maxPrice, minPrice },
+    filters: { text, city, province, land_size },
     updateFilterValue,
     all_products,
     clearFilters,
@@ -27,9 +27,9 @@ const FilterSection = () => {
   };
 
   // we need to have the individual data of each in an array format
-  const categoryData = getUniqueData(all_products, "category");
-  const companyData = getUniqueData(all_products, "company");
-  const colorsData = getUniqueData(all_products, "colors");
+  const provinceData = getUniqueData(all_products, "province");
+  const cityData = getUniqueData(all_products, "city");
+  const landSizeData = getUniqueData(all_products, "land_size");
   // console.log(
   //   "🚀 ~ file: FilterSection.js ~ line 23 ~ FilterSection ~ companyData",
   //   colorsData
@@ -49,37 +49,37 @@ const FilterSection = () => {
         </form>
       </div>
 
-      <div className="filter-category">
-        <h3>Category</h3>
+      {/* <div className="filter-city">
+        <h3>City</h3>
         <div>
-          {categoryData.map((curElem, index) => {
+          {cityData.map((curElem, index) => {
             return (
               <button
                 key={index}
                 type="button"
-                name="category"
+                name="city"
                 value={curElem}
-                className={curElem === category ? "active" : ""}
+                className={curElem === city ? "active" : ""}
                 onClick={updateFilterValue}>
                 {curElem}
               </button>
             );
           })}
         </div>
-      </div>
+      </div> */}
 
-      <div className="filter-company">
-        <h3>Company</h3>
+      <div className="filter-province">
+        <h3>Province</h3>
 
         <form action="#">
           <select
-            name="company"
-            id="company"
-            className="filter-company--select"
+            name="province"
+            id="province"
+            className="filter-province--select"
             onClick={updateFilterValue}>
-            {companyData.map((curElem, index) => {
+            {provinceData.map((curElem, index) => {
               return (
-                <option key={index} value={curElem} name="company">
+                <option key={index} value={curElem} name="province">
                   {curElem}
                 </option>
               );
@@ -140,7 +140,14 @@ const Wrapper = styled.section`
     }
   }
 
-  .filter-company--select {
+  .filter-city--select {
+    padding: 0.3rem 1.2rem;
+    font-size: 1.6rem;
+    color: ${({ theme }) => theme.colors.text};
+    text-transform: capitalize;
+  }
+
+  .filter-province--select {
     padding: 0.3rem 1.2rem;
     font-size: 1.6rem;
     color: ${({ theme }) => theme.colors.text};
