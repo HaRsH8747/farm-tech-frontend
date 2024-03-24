@@ -9,11 +9,14 @@ import { FilterContextProvider } from "./context/filter_context";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <AppProvider>
-    <FilterContextProvider>
+  // <React.StrictMode>
+
+  // </React.StrictMode>
+    <AppProvider>
+      <FilterContextProvider>
         <App />
-    </FilterContextProvider>
-  </AppProvider>
+      </FilterContextProvider>
+    </AppProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

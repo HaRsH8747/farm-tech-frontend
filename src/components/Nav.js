@@ -51,14 +51,14 @@ const Nav = () => {
 
     .navbar-lists {
       display: flex;
-      gap: 4.8rem;
+      gap: 25px;
       align-items: center;
       list-style: none;
       margin: 0;
       padding: 0;
 
       .navbar-link {
-        font-size: 1.6rem;
+        font-size: 18px;
         font-weight: 500;
         text-transform: uppercase;
         color: ${({ theme }) => theme.colors.white};
@@ -72,7 +72,7 @@ const Nav = () => {
     }
 
     .login-button {
-      font-size: 1.6rem;
+      font-size: 14px;
       font-weight: 500;
       text-transform: uppercase;
       color: ${({ theme }) => theme.colors.white};

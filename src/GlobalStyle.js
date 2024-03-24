@@ -17,7 +17,7 @@ export const GlobalStyle = createGlobalStyle`
 
 .content {
   flex: 1; /* This will allow the content to grow and fill the available space */
-  width: 100%; /* Full width */
+  width: 100%; /*Full width*/
 }
 
 #root {
