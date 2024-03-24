@@ -8,22 +8,6 @@ const Footer = () => {
   return (
     <>
       <Wrapper>
-        <section className="contact-short">
-          <div className="grid grid-two-column">
-            <div>
-              <h3>Ready to get started?</h3>
-              <h3>Talk to us today</h3>
-            </div>
-
-            <div>
-              <Button className="btn hireme-btn">
-                <NavLink to="/"> Get Started </NavLink>
-              </Button>
-            </div>
-          </div>
-        </section>
-        {/* footer section */}
-
         <footer>
           <div className="container grid grid-four-column">
             <div className="footer-about">
@@ -101,7 +85,7 @@ const Wrapper = styled.section`
   }
 
   footer {
-    padding: 14rem 0 9rem 0;
+    padding: 4rem 0 3rem 0;
     background-color: ${({ theme }) => theme.colors.footer_bg};
     h3 {
       color: ${({ theme }) => theme.colors.hr};

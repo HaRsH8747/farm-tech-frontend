@@ -4,7 +4,7 @@ import reducer from "../reducer/productReducer";
 
 const AppContext = createContext();
 
-const API = "http://127.0.0.1:8000/api/lands"; // Updated API URL
+const API = "http://192.168.2.18:8000/api/lands"; // Updated API URL
 
 const initialState = {
   isLoading: false,

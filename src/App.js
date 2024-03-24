@@ -10,6 +10,8 @@ import { GlobalStyle } from "./GlobalStyle";
 import { ThemeProvider } from "styled-components";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import DigitalStorage from "./DigitalStorage";
+import ChatPage from "./ChatPage";
 
 const App = () => {
   const theme = {
@@ -40,21 +42,27 @@ const App = () => {
 
   return (
     <div >
-      <ThemeProvider theme={theme}>
       <Router>
-        <GlobalStyle />
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/singleproduct/:id" element={<SingleProduct />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
-        <Footer />
+        <div className="app-container">
+          <ThemeProvider theme={theme}>
+            <GlobalStyle />
+            <Header />
+            <main className="content">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/digitalstorage" element={<DigitalStorage />} />
+                <Route path="/chatpage" element={<ChatPage />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/singleproduct/:id" element={<SingleProduct />} />
+                <Route path="*" element={<ErrorPage />} />
+              </Routes>
+            </main>
+            <Footer />
+          </ThemeProvider>
+        </div>
       </Router>
-    </ThemeProvider>
     </div>
   );
 };

@@ -128,7 +128,7 @@ const Nav = () => {
         </li>
         <li>
           <NavLink
-            to="/products"
+            to="/digitalstorage"
             className="nav-link nav-link-ltr navbar-link"
             onClick={() => setMenuIcon(false)}>
             Digital Storage

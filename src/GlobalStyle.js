@@ -9,6 +9,33 @@ export const GlobalStyle = createGlobalStyle`
   font-family: "Work Sans", sans-serif;
 }
 
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1; /* This will allow the content to grow and fill the available space */
+  width: 100%; /* Full width */
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Use 100% of the viewport height */
+}
+
+main {
+  flex: 1; /* This will allow the main content to expand and push the footer down */
+  /* Add other styles as necessary, but make sure they don't interfere with the layout */
+}
+
+footer {
+  margin-top: auto; /* This will push the footer to the bottom */
+  /* Keep your existing footer styles */
+}
+
 
 html {
   font-size: 62.5%;
