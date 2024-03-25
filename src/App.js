@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import About from "./About";
 import Home from "./Home";
 import Products from "./Products";
-import Contact from "./Contact";
+import ContactUs from "./ContactUs";
 import SingleProduct from "./SingleProduct";
 import ErrorPage from "./ErrorPage";
 import { GlobalStyle } from "./GlobalStyle";
@@ -19,10 +19,10 @@ import { AuthProvider } from "./context/authContext/index.js";
 import LogoutButton from "./components/Logout.js";
 import ProtectedRoute from "./ProtectedRoute";
 import Layout from "./layout/Layout.js";
+import LandApplications from "./components/LandApplications.js";
+import LandPosting from "./components/LandPosting.js";
 
 const App = () => {
-
-
 
   const theme = {
     colors: {
@@ -59,17 +59,19 @@ const App = () => {
               {/* <GlobalStyle /> */}
               <main className="content">
                 <Routes>
+
+                  {/* Common Routes */}
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<SignUp />} />
                   <Route path="/logout" element={<LogoutButton />} />
                   <Route path="/" element={<Layout><Home /></Layout>} />
                   <Route path="/about" element={<Layout><About /></Layout>} />
-                  <Route path="/contact" element={<Layout><Contact /></Layout>} />
+                  <Route path="/contact" element={<Layout><ContactUs /></Layout>} />
                   <Route path="*" element={<ErrorPage />} />
 
-                  {/* Use ProtectedRoute for routes that require authentication */}
+                  {/* Farmer and Landowner Routes */}
                   <Route
-                    path="/products"
+                    path="/lands"
                     element={<ProtectedRoute component={Products} />
                     }
                   />
@@ -82,13 +84,11 @@ const App = () => {
                     path="/digitalstorage"
                     element={
                       <ProtectedRoute component={DigitalStorage} />
-
                     }
                   />
                   <Route
                     path="/chatpage"
                     element={
-
                         <ProtectedRoute component={ChatPage} />
                     }
                   />
@@ -99,7 +99,27 @@ const App = () => {
                         <ProtectedRoute component={SingleProduct} />
                     }
                   />
-                  {/* <Route path="/products" element={<Layout><Products /></Layout>} />
+                  
+                  {/* Landowner Routes */}
+                  <Route
+                    path="/landapplications"
+                    element={
+
+                        <ProtectedRoute component={LandApplications} />
+                    }
+                  />
+                  <Route
+                    path="/landposting"
+                    element={
+
+                        <ProtectedRoute component={LandPosting} />
+                    }
+                  />
+                  
+
+
+
+                  {/* <Route path="/lands" element={<Layout><Products /></Layout>} />
                   <Route path="/digitalstorage" element={<Layout><DigitalStorage /></Layout>} />
                   <Route path="/chatpage" element={<Layout><ChatPage /></Layout>} />
                   <Route path="/singleproduct/:id" element={<Layout><SingleProduct /></Layout>} /> */}

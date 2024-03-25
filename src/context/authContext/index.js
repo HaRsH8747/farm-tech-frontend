@@ -10,10 +10,33 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
+
+  const initialData = null; // Define your initialData here
+
+
   const [currentUser, setCurrentUser] = useState(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [isEmailUser, setIsEmailUser] = useState(false);
   const [isGoogleUser, setIsGoogleUser] = useState(false);
+  // const [currentDBUser, setCurrentDBUser] = useState(null);
+  const [currentDBUser, setCurrentDBUser] = useState(() => {
+    const storedDBData = localStorage.getItem('storedDBData');
+    if (storedDBData) {
+      console.log("found Data", storedDBData);
+      return JSON.parse(storedDBData);
+    } else {
+      console.log("not in data", initialData);
+      return initialData;
+    }
+  });
+
+  useEffect(() => {
+    // Only store currentDBUser in local storage if it has changed
+    if (currentDBUser !== initialData) {
+      localStorage.setItem("storedDBData", JSON.stringify(currentDBUser));
+    }
+  }, [currentDBUser]);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -33,15 +56,17 @@ export function AuthProvider({ children }) {
       setIsEmailUser(isEmail);
 
       // check if the auth provider is google or not
-    //   const isGoogle = user.providerData.some(
-    //     (provider) => provider.providerId === GoogleAuthProvider.PROVIDER_ID
-    //   );
-    //   setIsGoogleUser(isGoogle);
+      //   const isGoogle = user.providerData.some(
+      //     (provider) => provider.providerId === GoogleAuthProvider.PROVIDER_ID
+      //   );
+      //   setIsGoogleUser(isGoogle);
 
       setUserLoggedIn(true);
+      setCurrentDBUser(user);
     } else {
       setCurrentUser(null);
       setUserLoggedIn(false);
+      setCurrentDBUser(null);
     }
 
     setLoading(false);
@@ -52,6 +77,8 @@ export function AuthProvider({ children }) {
     isEmailUser,
     isGoogleUser,
     currentUser,
+    currentDBUser,
+    setCurrentDBUser,
     setCurrentUser
   };
 

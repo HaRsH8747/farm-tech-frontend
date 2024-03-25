@@ -3,11 +3,10 @@ import 'flowbite';
 import 'tailwindcss/tailwind.css';
 import { firestore, } from './context/firebase';
 import { collection, doc, addDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
-import { useAuth } from './context/authContext/index.js'; // Adjust the import path as necessary
-
+import { useAuth } from './context/authContext/index.js'; // Adjust the import path as necessaryZZ
 
 const ChatPage = () => {
-    const { currentUser } = useAuth();
+    const { currentUser, currentDBUser, setCurrentDBUser} = useAuth();
 
     // State to hold multiple conversations
     const [conversations, setConversations] = useState([]);
@@ -16,12 +15,17 @@ const ChatPage = () => {
     const avatarImage = process.env.PUBLIC_URL + '/images/profile.webp';
 
     // Assuming 'yourUserId' is the ID of the current user
-    const userIds = ["vatsal123", "keyur123", "reza123"]; // Example user IDs
-    const yourUserId = currentUser?.uid;
+    const userIds = ["vatsal11","keyur","reza"]; // Example user IDs
+    // const yourUserId = currentUser?.uid;
+    const storedDBData = JSON.parse(localStorage.getItem('storedDBData'));
+    // if (storedDBData) {
+    //     setCurrentDBUser(JSON.parse(storedDBData));
+    // }
+    const yourUserId = storedDBData?.user_name;
     useEffect(() => {
         userIds.forEach((userId, index) => {
             if (userId !== yourUserId) {
-                const conversationId = [yourUserId, userId].sort().join("");
+                const conversationId = [`${yourUserId}`, `${userId}`].sort().join("");
                 const messagesRef = collection(firestore, "users", yourUserId, "conversations", conversationId, "messages");
                 const q = query(messagesRef, orderBy("timestamp"));
 
@@ -41,7 +45,7 @@ const ChatPage = () => {
                 return () => unsubscribe();
             }
         });
-    }, [firestore, currentUser]); // Added dependencies
+    }, [firestore]); // Added dependencies
 
     const handleSendMessage = async () => {
         if (currentMessage.trim() !== '') {
@@ -74,6 +78,8 @@ const ChatPage = () => {
             <div className="w-1/4 bg-white p-20">
                 {/* List of chat contacts */}
                 <ul className="space-y-1">
+                {console.log("conversation",conversations)}
+                
                     {conversations.map((conversation, index) => (
                         <li
                             key={index}
@@ -97,15 +103,15 @@ const ChatPage = () => {
                 {/* Chat header */}
                 <div className="bg-white p-4 border-b">
                     <div className="font-bold text-lg">
-                    Chat with {conversations.length > 0 ? conversations[activeConversationIndex].name : "Select a conversation"}
+                        Chat with {conversations.length > 0 ? conversations[activeConversationIndex].name : "Select a conversation"}
                     </div>
                 </div>
                 {/* Chat messages */}
                 <div className="flex-1 p-4 overflow-y-auto">
                     {conversations[activeConversationIndex]?.messages.map((message, index) => (
-                        <div key={index} className={`flex items-end space-x-2 ${message.senderID==yourUserId ? 'justify-end' : ''}`}>
-                            {message.senderID!=yourUserId && <img className="w-8 h-8 rounded-full" src={avatarImage} alt="avatar" />}
-                            <div className={`rounded px-4 py-2 ${message.senderID==yourUserId ? 'bg-green-100' : 'bg-blue-100'} text-lg`}>
+                        <div key={index} className={`flex items-end space-x-2 ${message.senderID == yourUserId ? 'justify-end' : ''}`}>
+                            {message.senderID != yourUserId && <img className="w-8 h-8 rounded-full" src={avatarImage} alt="avatar" />}
+                            <div className={`rounded px-4 py-2 ${message.senderID == yourUserId ? 'bg-green-100' : 'bg-blue-100'} text-lg`}>
                                 {message.text}
                             </div>
                         </div>

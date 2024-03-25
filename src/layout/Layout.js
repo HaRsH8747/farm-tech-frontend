@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
     return (
       <>
         {showHeaderFooter && <Header />}
-        <main className="content">{children}</main>
+        <main className="content pt-16 lg:pt-20">{children}</main>
         {/* {showHeaderFooter && <Footer />} */}
       </>
     );

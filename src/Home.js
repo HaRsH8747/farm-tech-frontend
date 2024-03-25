@@ -17,12 +17,16 @@ import { FingerPrintIcon, UsersIcon } from "@heroicons/react/24/solid";
 import FeatureCard from "./components/feature-card";
 import TeamCard from "./components/team-card";
 import featuresData from "./data/features-data";
+import farmData from "./data/farm-data";
+
 import teamData from "./data/team-data";
 import contactData from "./data/contact-data";
 import PageTitle from "./layout/page-title";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Video from "./components/Video";
+import ContactUs from './ContactUs';
+
 // import ExploreButton from "./components/explore-button";
 
 export function Home() {
@@ -33,7 +37,7 @@ export function Home() {
       <div>
         <Video />
       </div>
-      <div>
+      <div className="bg-sky-100 p-10">
         <div>
           <section className="-mt-32 bg-white px-4 pb-20 pt-4">
             <div className="container mx-auto">
@@ -89,7 +93,7 @@ export function Home() {
                 </div>
                 <div className="mx-auto mt-24 flex w-full justify-center px-4 md:w-4/12 lg:mt-0">
                   <Card className="shadow-lg border shadow-gray-500/10 rounded-lg">
-                    <CardHeader floated={false} className="relative h-50">
+                    <CardHeader floated={false} className="relative h-49">
                       <img
                         alt="Card Image"
                         src="/img/happy.jpg"
@@ -128,9 +132,8 @@ export function Home() {
         <section className="px-4 pt-20 pb-48">
           <div className="container mx-auto">
             <PageTitle section="Our Team" heading="Here are our heroes">
-              According to the National Oceanic and Atmospheric Administration,
-              Ted, Scambos, NSIDClead scentist, puts the potentially record
-              maximum.
+              "Alone we can do so little, together we can do so much"
+              If the team is diligent, then victory should come and help people"
             </PageTitle>
             <div className="mt-24 grid grid-cols-1 gap-12 gap-x-24 md:grid-cols-2 xl:grid-cols-4">
               {teamData.map(({ img, name, position, socials }) => (
@@ -182,7 +185,7 @@ export function Home() {
                 </Card>
               ))}
             </div>
-            <PageTitle section="Contact Us" heading="Want to work with us?">
+            {/* <PageTitle section="Contact Us" heading="Want to work with us?">
               Complete this form and we will get back to you in 24 hours.
             </PageTitle>
             <form className="mx-auto w-full mt-12 lg:w-5/12">
@@ -212,9 +215,33 @@ export function Home() {
               <Button variant="gradient" size="lg" className="mt-8" fullWidth>
                 Send Message
               </Button>
-            </form>
+            </form> */}
           </div>
         </section>
+      </div>
+      <section className="bg-sky-50 p-5 lg:p-10">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {farmData.map(({ Title, City, Province, LandSize, AvailableFor, SoilType }) => (
+              <div key={Title} className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+                <a href="#">
+                  <img className="w-full h-56 object-cover object-center" src="/img/farm1.jpg" alt={Title} />
+                </a>
+                <div className="p-5">
+                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">{Title}</h5>
+                  <p className="mb-2 font-normal text-gray-700 text-shadow-default"><span className="font-semibold">City:</span> {City},{Province}</p>
+                  <p className="mb-2 font-normal text-gray-700 text-shadow-default"><span className="font-semibold">Land Size:</span> {LandSize} Acre</p>
+                  <p className="mb-2 font-normal text-gray-700"><span className="font-semibold">Available For:</span> {AvailableFor}</p>
+                  <p className="mb-4 font-normal text-gray-700"><span className="font-semibold">Soil Type:</span> {SoilType}</p>
+                  <Button variant="filled">Read more</Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <div className="App">
+        <ContactUs />
       </div>
     </>
   );

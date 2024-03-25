@@ -105,6 +105,36 @@ const Nav = () => {
     }
   `;
 
+
+  const storedDBData = JSON.parse(localStorage.getItem('storedDBData'));
+  const isLandOwner = storedDBData.designation == "L" ? true : false;
+  let additionalLinks = null;
+
+  if (isLandOwner) {
+    additionalLinks = (
+      <>
+        <li>
+          <NavLink
+            to="/landapplications"
+            className="nav-link nav-link-ltr navbar-link"
+            onClick={() => setMenuIcon(false)}
+          >
+            Applications
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/landposting"
+            className="nav-link nav-link-ltr navbar-link"
+            onClick={() => setMenuIcon(false)}
+          >
+            Posting
+          </NavLink>
+        </li>
+      </>
+    );
+  }
+
   return (
     <Navbar menuIcon={menuIcon}>
       <ul className="navbar-lists" style={{ margin: "auto" }}>
@@ -119,7 +149,7 @@ const Nav = () => {
         </li>
         <li>
           <NavLink
-            to="/products"
+            to="/lands"
             className="nav-link nav-link-ltr navbar-link"
             onClick={() => setMenuIcon(false)}
           >
@@ -134,6 +164,7 @@ const Nav = () => {
             Digital Storage
           </NavLink>
         </li>
+        {additionalLinks}
         <li>
           <NavLink
             to="/about"
