@@ -2,9 +2,8 @@ import { React, useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import About from "./About";
 import Home from "./Home";
-import Products from "./Products";
+import Lands from "./Lands";
 import ContactUs from "./ContactUs";
-import SingleProduct from "./SingleProduct";
 import ErrorPage from "./ErrorPage";
 import { GlobalStyle } from "./GlobalStyle";
 import { ThemeProvider } from "styled-components";
@@ -21,6 +20,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import Layout from "./layout/Layout.js";
 import LandApplications from "./components/LandApplications.js";
 import LandPosting from "./components/LandPosting.js";
+import LandDetail from "./components/LandDetail.js";
+import AddLand from "./AddLand.js";
 
 const App = () => {
 
@@ -62,7 +63,7 @@ const App = () => {
 
                   {/* Common Routes */}
                   <Route path="/login" element={<Login />} />
-                  <Route path="/signup" element={<SignUp />} />
+                  <Route path="/register" element={<SignUp />} />
                   <Route path="/logout" element={<LogoutButton />} />
                   <Route path="/" element={<Layout><Home /></Layout>} />
                   <Route path="/about" element={<Layout><About /></Layout>} />
@@ -72,7 +73,19 @@ const App = () => {
                   {/* Farmer and Landowner Routes */}
                   <Route
                     path="/lands"
-                    element={<ProtectedRoute component={Products} />
+                    element={<ProtectedRoute component={Lands} />
+                    }
+                  />
+                  
+                  <Route
+                    path="/land-detail"
+                    element={<ProtectedRoute component={LandDetail} />
+                    }
+                  />
+                  
+                  <Route
+                    path="/add-land"
+                    element={<ProtectedRoute component={AddLand} />
                     }
                   />
                   <Route
@@ -91,15 +104,7 @@ const App = () => {
                     element={
                         <ProtectedRoute component={ChatPage} />
                     }
-                  />
-                  <Route
-                    path="/singleproduct/:id"
-                    element={
-
-                        <ProtectedRoute component={SingleProduct} />
-                    }
-                  />
-                  
+                  />                  
                   {/* Landowner Routes */}
                   <Route
                     path="/landapplications"
@@ -115,14 +120,11 @@ const App = () => {
                         <ProtectedRoute component={LandPosting} />
                     }
                   />
-                  
-
-
 
                   {/* <Route path="/lands" element={<Layout><Products /></Layout>} />
                   <Route path="/digitalstorage" element={<Layout><DigitalStorage /></Layout>} />
                   <Route path="/chatpage" element={<Layout><ChatPage /></Layout>} />
-                  <Route path="/singleproduct/:id" element={<Layout><SingleProduct /></Layout>} /> */}
+                   */}
                 </Routes>
               </main>
             </ThemeProvider>

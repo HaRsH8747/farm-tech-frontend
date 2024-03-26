@@ -1,28 +1,28 @@
 import {
-  ChatBubbleBottomCenterTextIcon,
+  ChatBubbleBottomCenterTextIcon,UsersIcon,ChartBarIcon,ArchiveBoxIcon
 } from "@heroicons/react/24/solid";
 
 export const featuresData = [
   {
     color: "gray",
-    title: "Awarded Agency",
-    icon: ChatBubbleBottomCenterTextIcon,
+    title: "Collaborative Farming Network",
+    icon: UsersIcon ,
     description:
-      "Divide details about your product or agency work into parts. A paragraph describing a feature will be enough.",
+      "Join a thriving network where Canadian landowners and farmers unite to cultivate success. Our platform fosters partnerships, allowing landowners to offer idle land and farmers to utilize it effectively. Cultivate a variety of crops, boost land productivity, and share in the fruits of collaborative growth.",
   },
   {
     color: "gray",
-    title: "Free Revisions",
-    icon: ChatBubbleBottomCenterTextIcon,
+    title: "Smart Storage Solutions",
+    icon: ArchiveBoxIcon,
     description:
-      "Keep you user engaged by providing meaningful information. Remember that by this time, the user is curious.",
+      "Preserve the quality of your harvest with our state-of-the-art digital storage solutions. Our environmentally-controlled facilities ensure your crops remain in peak condition, ready for the market at optimal times. Reduce waste and maximize your returns with secure, sustainable storage.",
   },
   {
     color: "gray",
-    title: "Verified Company",
-    icon: ChatBubbleBottomCenterTextIcon,
+    title: "Data-Driven Cultivation Insights",
+    icon: ChartBarIcon,
     description:
-      "Write a few lines about each one. A paragraph describing a feature will be enough. Keep you user engaged!",
+      "Empower your farming decisions with advanced market and demographic analytics. Understand what to grow, when, and where for maximum profitability. Our platform's insights guide you to meet demand efficiently, aligning your efforts with the path to zero hunger",
   },
 ];
 

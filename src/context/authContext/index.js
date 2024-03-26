@@ -62,11 +62,11 @@ export function AuthProvider({ children }) {
       //   setIsGoogleUser(isGoogle);
 
       setUserLoggedIn(true);
-      setCurrentDBUser(user);
+      // setCurrentDBUser(user);
     } else {
       setCurrentUser(null);
       setUserLoggedIn(false);
-      setCurrentDBUser(null);
+      // setCurrentDBUser(null);
     }
 
     setLoading(false);

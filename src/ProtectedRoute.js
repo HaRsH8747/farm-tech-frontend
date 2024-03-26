@@ -16,22 +16,18 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     }, []); // Empty dependency array to run the effect only once when the component mounts
 
 
-    console.log("in protected route", currentDBUser);
     const storedDBData = localStorage.getItem('storedDBData');
-    // if (storedDBData) {
-    //     // setCurrentDBUser(JSON.parse(storedDBData));
-    //     return (
-    //         <Layout><Component /></Layout>
-    //     );
-    // }
+    if (storedDBData) {
+        // setCurrentDBUser(JSON.parse(storedDBData));
+        return (
+            <Layout><Component /></Layout>
+        );
+    }
 
     // if (currentDBUser!=null) {
 
     // }
-    return (
-        <Layout><Component /></Layout>
-    );
-    // return (<Navigate to="/login" />);
+    return (<Navigate to="/login" />);
 };
 
 export default ProtectedRoute;

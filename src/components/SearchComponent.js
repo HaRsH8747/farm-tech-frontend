@@ -1,117 +1,73 @@
-import React, { useState } from 'react';
-import { Checkbox } from "@material-tailwind/react";
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Dropdown, DropdownItem, Accordion, AccordionContent, AccordionPanel, AccordionTitle } from 'flowbite-react';
+import { Accordion, AccordionContent, AccordionPanel, AccordionTitle } from 'flowbite-react';
+
+function DropdownMenu({ data, fields, fieldNames, onFiltersChange }) {
+    // State to hold the unique values for each field
+    const [uniqueValues, setUniqueValues] = useState({});
+    const [selectedFilters, setSelectedFilters] = useState(
+        fields.reduce((acc, field) => ({ ...acc, [field]: [] }), {})
+    );
+
+    // Effect to calculate unique values whenever the data or fields props change
+    useEffect(() => {
+        const newUniqueValues = fields.reduce((acc, field) => {
+            const values = Array.from(new Set(data.map(item => item[field])));
+            acc[field] = values;
+            return acc;
+        }, {});
+        setUniqueValues(newUniqueValues);
+    }, [data, fields]);
+
+    useEffect(() => {
+        onFiltersChange(selectedFilters); // Notify parent component of the filter change
+    }, [selectedFilters, onFiltersChange]);
 
 
-function DropdownMenu() {
-
-    const markersData = [
-        {
-            lat: 42.25842463671085,
-            lng: -83.0721388933654,
-            detail: "This storage has a great capacity for grains.",
-            name: "Grain Storage Facility",
-            city: "Windsor",
-            province: "Ontario",
-            storageCapacity: "10,000 tons",
-            storageType: "Grain",
-            minRentingPeriod: "6 months"
-        },
-        {
-            lat: 42.29121029697507,
-            lng: -82.9939575928812,
-            detail: "Ideal for perishable goods, with excellent temperature control.",
-            name: "Perishable Goods Storage",
-            city: "Essex",
-            province: "Ontario",
-            storageCapacity: "5,000 cubic feet",
-            storageType: "Refrigerated",
-            minRentingPeriod: "3 months"
-        },
-        {
-            lat: 42.314937088967046,
-            lng: -83.03636360168505,
-            detail: "Secure and spacious, perfect for equipment or vehicle storage.",
-            name: "Equipment Storage Yard",
-            city: "LaSalle",
-            province: "Ontario",
-            storageCapacity: "2,500 square meters",
-            storageType: "Outdoor",
-            minRentingPeriod: "1 month"
-        },
-        {
-            lat: 42.26910445645066,
-            lng: -83.13831716275215,
-            detail: "Specialized in liquid storage with high-capacity tanks.",
-            name: "Liquid Storage Tanks",
-            city: "Amherstburg",
-            province: "Ontario",
-            storageCapacity: "500,000 liters",
-            storageType: "Liquid",
-            minRentingPeriod: "12 months"
-        },
-        {
-            lat: 42.33725627853263,
-            lng: -83.04930027008057,
-            detail: "Equipped for bulk storage with easy transport access.",
-            name: "Bulk Storage Warehouse",
-            city: "Tecumseh",
-            province: "Ontario",
-            storageCapacity: "20,000 pallets",
-            storageType: "Dry",
-            minRentingPeriod: "1 month"
-        }
-    ];
-
-    const uniqueCities = Array.from(new Set(markersData.map(marker => marker.city)));
-    const uniqueStorageTypes = Array.from(new Set(markersData.map(marker => marker.storageType)));
-
-    const [open, setOpen] = useState(false);
-
-    const toggleMenu = () => {
-        setOpen(!open);
+    const handleCheckboxChange = (field, value, isChecked) => {
+        setSelectedFilters(prev => {
+            const updatedFilters = { ...prev };
+            if (isChecked) {
+                // Add value to the filter
+                updatedFilters[field] = [...updatedFilters[field], value];
+            } else {
+                // Remove value from the filter
+                updatedFilters[field] = updatedFilters[field].filter(v => v !== value);
+            }
+            return updatedFilters;
+        });
     };
 
-    const closeMenu = () => {
-        setOpen(false);
-    };
+    // Function to get the visible name for a field
+    const getFieldName = (field) => {
+        const fieldObj = fieldNames.find(f => f.field === field);
+        return fieldObj ? fieldObj.name : field; // Fallback to field if no name is found
+    }
 
     return (
         <>
             <Wrapper>
-                <Accordion collapseAll>
-                    <AccordionPanel>
-                        <AccordionTitle>
-                            <div className="small-accordion-title">City</div>
-                        </AccordionTitle>
-                        <AccordionContent>
-                            {uniqueCities.map((item, index) => (
-                                <div>
-                                    <input type="checkbox" id={`checkbox-${index}`} name="dashboard" className="checkbox-small" />
-                                    <label htmlFor={`checkbox-${index}`} className="label-large">{item}</label>
-
-                                </div>
-                            ))}
-
-                            {/* Add more checkboxes as needed */}
-                        </AccordionContent>
-                    </AccordionPanel>
-                    <AccordionPanel>
-                        <AccordionTitle>Storage Type</AccordionTitle>
-                        <AccordionContent>
-                            {uniqueStorageTypes.map((item, index) => (
-                                <div>
-                                    <input type="checkbox" id={`checkbox-${index}`} name="dashboard" className="checkbox-small" />
-                                    <label htmlFor={`checkbox-${index}`} className="label-large">{item}</label>
-                                </div>
-                            ))}
-                            {/* Add more checkboxes as needed */}
-                        </AccordionContent>
-                    </AccordionPanel>
-                    {/* Add more accordion panels as needed */}
+                <Accordion alwaysOpen={true}>
+                    {fields.map(field => (
+                        <AccordionPanel key={field}>
+                            <AccordionTitle>{getFieldName(field)}</AccordionTitle>
+                            <AccordionContent>
+                                {uniqueValues[field]?.map((value, index) => (
+                                    <div key={`${field}-${index}`}>
+                                        <input
+                                            type="checkbox"
+                                            id={`checkbox-${field}-${index}`}
+                                            name={field}
+                                            className="checkbox-small"
+                                            onChange={e => handleCheckboxChange(field, value, e.target.checked)}
+                                        />
+                                        <label htmlFor={`checkbox-${field}-${index}`} className="label-large">{value}</label>
+                                    </div>
+                                ))}
+                            </AccordionContent>
+                        </AccordionPanel>
+                    ))}
                 </Accordion>
-
             </Wrapper>
         </>
     );
@@ -119,25 +75,19 @@ function DropdownMenu() {
 
 const Wrapper = styled.section`
 .checkbox-small {
-    width: 20px; /* Adjust the width as needed */
-    height: 20px; /* Adjust the height as needed */
-    margin-right: 8px; /* Adjust the margin-right as needed */
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
 }
 
 .label-large {
-    font-size: 16px; /* Adjust the font size as needed */
+    font-size: 16px;
 }
-  
-  .checkbox-large {
-    transform: scale(3.5); /* Adjust the scale factor as needed */
-  }
 
-  .accordion-panel .accordion-title.small-accordion-title {
-    font-size: 8px; /* Adjust the font size as needed */
-    padding: 8px; /* Adjust the padding as needed */
-    /* Add any additional styling as needed */
-  }
+.accordion-panel .accordion-title {
+    font-size: 16px;
+    padding: 8px;
+}
 `;
-
 
 export default DropdownMenu;

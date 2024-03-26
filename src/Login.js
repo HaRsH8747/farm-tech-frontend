@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { signIn } from './context/AuthService'; // Adjust the path as necessary
 import { useAuth } from './context/authContext/index.js'; // Adjust the import path as necessary
 import axios from 'axios';
+import PopUp from './components/PopUp.js';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -12,74 +13,99 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [currentUserId, setCurrentUserId] = useState('');
+    const [popUp, setPopUp] = useState({ isVisible: false, message: '' }); // PopUp state
+
+    const showPopUp = (message) => {
+        setPopUp({ isVisible: true, message });
+        setTimeout(() => {
+            setPopUp({ isVisible: false, message: '' }); // Automatically close the pop-up after some time
+        }, 5000); // Adjust time as needed
+    };
 
     const handleLogin = async (e) => {
         e.preventDefault(); // Prevent the form from refreshing the page
         try {
+            const isEmailVerified = await signIn(email, password);
+            if (isEmailVerified) {
+                // Email is verified, proceed with the application flow
+                try {
 
-            const data = new URLSearchParams();
-            data.append("email", "nevil@gmail.com");
-            data.append("password", "admin@123");
+                    const data = new URLSearchParams();
+                    data.append("email", email);
+                    data.append("password", password);
 
-            const config = {
-                method: 'post',
-                url: 'http://192.168.2.18:8000/login/',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Cookie': 'csrftoken=Q10eo92VTUqH3eLEtYyYOD5bKGAkL9ix'
-                },
-                data: data
-            };
+                    const config = {
+                        method: 'post',
+                        url: 'http://192.168.2.18:8000/login/',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Cookie': 'csrftoken=Q10eo92VTUqH3eLEtYyYOD5bKGAkL9ix'
+                        },
+                        data: data
+                    };
 
-            axios(config)
-                .then(response => {
-                    console.log(response.data);
-                    if (response.status === 200) {
-                        const userData = response.data; // Assuming the server returns user data
-                        setCurrentUserId(userData.user_id);
+                    axios(config)
+                        .then(response => {
+                            console.log(response.data);
+                            if (response.status === 200) {
+                                const userData = response.data; // Assuming the server returns user data
+                                setCurrentUserId(userData.user_id);
 
-                        const response2 = axios.get('http://192.168.2.18:8000/api/extendedusers', {
-                            headers: {
-                                'Content-Type': 'application/json'
+                                const response2 = axios.get('http://192.168.2.18:8000/api/extendedusers', {
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                });
+                                response2.then(response2 => {
+                                    if (response2.status === 200) {
+                                        const userData2 = response2.data;
+                                        const foundUser = userData2.find(user => user.user === userData.user_id);
+
+                                        if (foundUser) {
+                                            console.log('Found user:', foundUser);
+                                            setCurrentDBUser(foundUser);
+                                        } else {
+                                            console.log('User not found.');
+                                        }
+                                        navigate('/'); // Redirect to the home page
+                                    }
+                                })
+
+                            } else {
+                                // Handle authentication failure
+                                console.error("Failed to log in: ", response.statusText);
+                                // Handle errors (e.g., show an error message)
                             }
+                        })
+                        .catch(error => {
+                            console.log('error', error);
                         });
 
-                        if (response2.status === 200) {
-                            const userData2 = response2.data;
-                            const foundUser = userData2.find(user => user.user === userData.user_id);
-
-                            if (foundUser) {
-                                console.log('Found user:', foundUser);
-                                setCurrentDBUser(foundUser);
-                            } else {
-                                console.log('User not found.');
-                            }
-                            navigate('/'); // Redirect to the home page
-                        }
-                    } else {
-                        // Handle authentication failure
-                        console.error("Failed to log in: ", response.statusText);
-                        // Handle errors (e.g., show an error message)
-                    }
-                })
-                .catch(error => {
-                    console.log('error', error);
-                });
-
-            // const response = await axios.post('http://192.168.2.18:8000/login/', {
-            //     email: email,
-            //     password: password
-            // }, {
-            //     headers: {
-            //         'Content-Type': 'application/x-www-form-urlencoded'
-            //     }
-            // });
+                    // const response = await axios.post('http://192.168.2.18:8000/login/', {
+                    //     email: email,
+                    //     password: password
+                    // }, {
+                    //     headers: {
+                    //         'Content-Type': 'application/x-www-form-urlencoded'
+                    //     }
+                    // });
 
 
+                } catch (error) {
+                    console.error("Failed to log in: ", error.message);
+                    // Handle errors (e.g., show an error message)
+                }
+                // Redirect or update state as needed
+            } else {
+                // Email is not verified
+                showPopUp("Please verify your email to proceed.");
+                // Handle accordingly, maybe show a message or redirect to a help page
+            }
         } catch (error) {
-            console.error("Failed to log in: ", error.message);
-            // Handle errors (e.g., show an error message)
+            // Handle sign-in errors (e.g., show a notification or message)
+            showPopUp("Sign-in failed: " + error.message);
         }
+
     };
 
     return (
@@ -134,13 +160,14 @@ const Login = () => {
 
                         <button className="button-style bg-gray-700 hover:bg-black" onClick={handleLogin}>Submit</button>
 
-                        <div className="flex justify-end text-sm mb-1 text-gray-500 hover:text-gray-800 underline underline-offset-1 cursor-pointer" onClick={() => { Navigate("/register") }}>Create Account</div>
+                        <div className="flex justify-end text-sm mb-1 text-gray-500 hover:text-gray-800 underline underline-offset-1 cursor-pointer" onClick={() => { navigate("/register") }}>Create Account</div>
                     </div>
                     <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <button className="button-style bg-gray-700 hover:bg-black" onClick={() => { Navigate("/") }}>Go to home</button>
+                        <button className="button-style bg-gray-700 hover:bg-black" onClick={() => { navigate("/") }}>Go to home</button>
                     </div>
                 </div>
             </div>
+            <PopUp isVisible={popUp.isVisible} message={popUp.message} onClose={() => setPopUp({ isVisible: false, message: '' })} />
 
         </>
     );

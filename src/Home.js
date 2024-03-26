@@ -13,6 +13,7 @@ import {
   Checkbox,
 } from "@material-tailwind/react";
 import { FingerPrintIcon, UsersIcon } from "@heroicons/react/24/solid";
+
 // import { PageTitle, Footer } from "@/widgets/layout";
 import FeatureCard from "./components/feature-card";
 import TeamCard from "./components/team-card";
@@ -37,7 +38,7 @@ export function Home() {
       <div>
         <Video />
       </div>
-      <div className="bg-sky-100 p-10">
+      <div className="bg-sky-50 p-10">
         <div>
           <section className="-mt-32 bg-white px-4 pb-20 pt-4">
             <div className="container mx-auto">
@@ -112,9 +113,9 @@ export function Home() {
                       <Typography
                         variant="h5"
                         color="blue-gray"
-                        className="mb-3 mt-2 font-bold"
+                        className="mb-3 mt-2 font-bold text-center"
                       >
-                        Top Notch Services
+                        Nourishing the Future
                       </Typography>
                       {/* <Typography className="font-normal text-blue-gray-500">
                         The Arctic Ocean freezes every winter and much of the
@@ -219,27 +220,7 @@ export function Home() {
           </div>
         </section>
       </div>
-      <section className="bg-sky-50 p-5 lg:p-10">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {farmData.map(({ Title, City, Province, LandSize, AvailableFor, SoilType }) => (
-              <div key={Title} className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden hover:shadow-2xl transition-shadow duration-300">
-                <a href="#">
-                  <img className="w-full h-56 object-cover object-center" src="/img/farm1.jpg" alt={Title} />
-                </a>
-                <div className="p-5">
-                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">{Title}</h5>
-                  <p className="mb-2 font-normal text-gray-700 text-shadow-default"><span className="font-semibold">City:</span> {City},{Province}</p>
-                  <p className="mb-2 font-normal text-gray-700 text-shadow-default"><span className="font-semibold">Land Size:</span> {LandSize} Acre</p>
-                  <p className="mb-2 font-normal text-gray-700"><span className="font-semibold">Available For:</span> {AvailableFor}</p>
-                  <p className="mb-4 font-normal text-gray-700"><span className="font-semibold">Soil Type:</span> {SoilType}</p>
-                  <Button variant="filled">Read more</Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
       <div className="App">
         <ContactUs />
       </div>

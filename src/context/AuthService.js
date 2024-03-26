@@ -1,28 +1,73 @@
 // src/AuthService.js
-import { firestore, auth } from './firebase.js';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { auth, firestore } from './firebase.js';
+import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 
 const signUp = async (email, password, userName) => {
-    // Create user with email and password
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-  
-    // Add user details in Firestore
-    await setDoc(doc(firestore, "users", user.uid), {
-      userName: userName,
-      email: email
-    });
-  
-    return user; // Returning the user might be useful for further actions
-  };
+  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  const user = userCredential.user;
 
-const signIn = (email, password) => {
-  return signInWithEmailAndPassword(auth, email, password);
+  // Send verification email
+  await sendEmailVerification(user);
+
+  // Add user details in Firestore
+  // await setDoc(doc(firestore, "users", user.uid), {
+  //   userName: userName,
+  //   email: email,
+  //   // You might want to add a field indicating the email is not verified yet
+  //   emailVerified: false
+  // });
+
+  return user; // The user is created but their email is not verified yet
+};
+
+const signIn = async (email, password) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    if (user.emailVerified) {
+      // User's email is verified
+      console.log('Email is verified');
+      return true; // Indicate successful sign-in with verified email
+    } else {
+      // User's email is not verified
+      console.log('Please verify your email first.');
+      return false; // Indicate sign-in failure due to unverified email
+    }
+  } catch (error) {
+    // Handle possible errors, such as wrong password, user not found, etc.
+    console.error("Error signing in:", error.message);
+    throw error; // Re-throw the error to be handled by the caller
+  }
+};
+
+const googleSignUp = async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    // The signed-in user info.
+    const user = result.user;
+
+    // Optionally add/update user details in Firestore
+    await setDoc(doc(firestore, "users", user.uid), {
+      userName: user.displayName, // Or any other username logic you want
+      email: user.email
+    }, { merge: true }); // Merge true to avoid overwriting existing fields other than userName and email
+
+    return user;
+  } catch (error) {
+    console.error("Error signing in with Google", error);
+    throw error;
+  }
 };
 
 const logOut = () => {
+  localStorage.clear();
   return signOut(auth);
 };
 
-export { signUp, signIn, logOut };
+export { signUp, signIn, googleSignUp, logOut };
