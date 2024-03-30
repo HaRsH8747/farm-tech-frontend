@@ -47,7 +47,7 @@ const AddLand = () => {
   // ...
   return (
     <div className="container mx-auto p-4">
-      <div className="bg-white p-6 rounded-lg shadow-lg">
+      <div className="bg-sky-300 p-6 rounded-lg shadow-2xl">
         <h2 className="text-2xl font-bold mb-5 text-center">ADD YOUR POST</h2>
         <div className="flex flex-col md:flex-row -mx-3">
           <div className="w-full md:w-1/2 px-3">
@@ -291,7 +291,7 @@ const AddLand = () => {
           <div className="w-full md:w-1/2 px-3 flex flex-col items-center mt-10">
             {/* File Upload Input */}
             <div className="w-full">
-              <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+              <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-900 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                     <svg
                       class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"

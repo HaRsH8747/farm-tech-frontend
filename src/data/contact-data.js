@@ -6,22 +6,27 @@ import {
 
 export const contactData = [
   {
-    title: "Excelent Services",
+    title: "Explore Our Services",
     icon: BriefcaseIcon,
     description:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
+    "Unlock eco-efficient farming with our suite of services. From land sharing to sustainability consultations, we're your partners in cultivating productivity and environmental harmony."
+
+
+
   },
   {
-    title: "Grow Your Market",
+    title: "Get Market Insights",
     icon: ChartBarIcon,
     description:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
+    "Gain a competitive edge with actionable market analytics. Make informed crop choices and optimize harvest times for peak profitability."
+
   },
   {
-    title: "Launch Time",
+    title: "Start Your Journey",
     icon: PlayIcon,
     description:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
+    "Embark on a path to sustainable farming. Connect with land opportunities and integrate smart, eco-friendly practices for a thriving agricultural future."
+
   },
 ];
 

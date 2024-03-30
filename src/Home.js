@@ -134,7 +134,7 @@ export function Home() {
           <div className="container mx-auto">
             <PageTitle section="Our Team" heading="Here are our heroes">
               "Alone we can do so little, together we can do so much"
-              If the team is diligent, then victory should come and help people"
+If the team is diligent, then victory should come and help people"
             </PageTitle>
             <div className="mt-24 grid grid-cols-1 gap-12 gap-x-24 md:grid-cols-2 xl:grid-cols-4">
               {teamData.map(({ img, name, position, socials }) => (
@@ -159,11 +159,8 @@ export function Home() {
         </section>
         <section className="relative bg-white py-24 px-4">
           <div className="container mx-auto">
-            <PageTitle section="Co-Working" heading="Build something">
-              Put the potentially record low maximum sea ice extent tihs year down
-              to low ice. According to the National Oceanic and Atmospheric
-              Administration, Ted, Scambos.
-            </PageTitle>
+            <PageTitle section="Start with Sustainability" heading="Embracing Sustainability"  >
+            In the face of today's climate challenges, experts like Ted Scambos from the National Oceanic and Atmospheric Administration inspire our commitment to sustainable land management. Our platform encourages practices that nourish our planet, leveraging cutting-edge agricultural technology to reduce environmental impact and pave the way for a sustainable future for all.            </PageTitle>
             <div className="mx-auto mt-20 mb-48 grid max-w-5xl grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3">
               {contactData.map(({ title, icon, description }) => (
                 <Card
@@ -220,10 +217,32 @@ export function Home() {
           </div>
         </section>
       </div>
+      
+      <section className="bg-sky-50 p-5 lg:p-10">
+  <div className="container mx-auto">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {farmData.map(({ Title, City, Province, LandSize, AvailableFor, SoilType }) => (
+        <div key={Title} className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden hover:shadow-2xl hover:scale-105 transition-shadow duration-300">
+          <a href="#">
+          <img className="w-full h-56 object-cover object-center rounded-bl-lg rounded-br-lg hover:shadow-2xl hover:scale-105" src="/img/farm1.jpg" alt={Title} />
+          </a>
+          <div className="p-5">
+            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">{Title}</h5>
+            <p className="mb-2 font-normal text-gray-700 text-shadow-default"><span className="font-semibold">City:</span> {City},{Province}</p>
+              <p className="mb-2 font-normal text-gray-700 text-shadow-default"><span className="font-semibold">Land Size:</span> {LandSize} Acre</p>
+            <p className="mb-2 font-normal text-gray-700"><span className="font-semibold">Available For:</span> {AvailableFor}</p>
+            <p className="mb-4 font-normal text-gray-700"><span className="font-semibold">Soil Type:</span> {SoilType}</p>
+            <Button variant="filled">Read more</Button>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
       <div className="App">
-        <ContactUs />
-      </div>
+      <ContactUs />
+    </div>
     </>
   );
 }

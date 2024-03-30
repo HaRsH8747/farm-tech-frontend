@@ -16,7 +16,7 @@ const ContactUs = () => {
                 className="w-32 h-32 rounded-full object-cover" // Adjust this for a rounded square image
               />
             </div>
-            <h2 className="text-3xl font-bold mb-2">Abhishek Patel</h2>
+            <h2 className="text-3xl font-bold mb-2">FarmTech Team</h2>
             <p className="text-gray-600 mb-4">Front-End Developer</p>
             <p className="text-gray-600 mb-6">I am available for internship or part-time position as of now. Contact me and let's talk.</p>
             <p className="text-lg font-semibold mb-2">CONNECT WITH ME</p>

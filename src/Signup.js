@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { googleSignUp, signUp } from "./context/AuthService";
 import PopUp from "./components/PopUp";
+import axios from 'axios';
 
 
 const SignUp = () => {
@@ -25,56 +26,40 @@ const SignUp = () => {
     const handleSignUp = async () => {
         try {
             const user = await signUp(email, password, username);
-            // alert('Please check your email to verify your account.');
             showPopUp("Please check your email to verify your account.");
 
-            // After Firebase sign-up and email verification request
-            // First API Call
-            const response = await fetch("http://192.168.2.18:8000/register/", {
-                method: 'POST',
+            // Setting cookies in the headers
+            const config = {
                 headers: {
                     'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: username,
-                    email: email,
-                    password: password,
-                }),
-            });
+                    'Cookie': 'tabstyle=raw-tab; csrftoken=TRab5aRRMwIX05NUtqw1imZryuMe0qyt; sessionid=1miniz06s3tydwnjq00z3hot6vxcilgd'
+                }
+            };
 
-            if (!response.ok) {
-                throw new Error('Failed to register user on custom backend');
-            }
+            // First API Call with axios
+            const response = await axios.post("http://192.168.2.18:8000/register/", {
+                username: username,
+                email: email,
+                password: password,
+            }, config);
 
-            const data = await response.json();
-            const userId = data.user.id;
-
+            console.log("Response:", response);
+            console.log("Response:", response.data);
+            const userId = response.data.id;
             const designation = userType === 'farmer' ? 'F' : 'L';
 
-            // Second API Call
-            const extendedUserResponse = await fetch("http://192.168.2.18:8000/api/extendedusers", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    user: userId,
-                    user_name: username,
-                    designation: designation,
-                    about_me: username // Assuming you want to use username for about_me, adjust as necessary
-                }),
+            // Second API Call after the first one
+            const extendedUserResponse = await axios.post("http://192.168.2.18:8000/api/extendedusers", {
+                user: userId,
+                user_name: username,
+                designation: designation,
+                about_me: username // Adjust as necessary
             });
 
-            if (!extendedUserResponse.ok) {
-                throw new Error('Failed to create extended user details');
-            }
-
-            // Successfully created user and extended user details
-            console.log("Extended user details created", await extendedUserResponse.json());
+            console.log("Extended user details created", extendedUserResponse.data);
             navigate("/login");
         } catch (error) {
             console.error("Error during sign up or API calls:", error.message);
-            alert('Failed to sign up or create user details: ' + error.message);
         }
     };
 

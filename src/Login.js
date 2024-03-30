@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { signIn } from './context/AuthService'; // Adjust the path as necessary
 import { useAuth } from './context/authContext/index.js'; // Adjust the import path as necessary
 import axios from 'axios';
-import PopUp from './components/PopUp.js';
+import PopUp from './components/PopUp';
 
 const Login = () => {
     const navigate = useNavigate();
