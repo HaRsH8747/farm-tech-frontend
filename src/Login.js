@@ -1,12 +1,24 @@
-import { Button, Label, TextInput } from 'flowbite-react';
+import { Label, TextInput } from 'flowbite-react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signIn } from './context/AuthService'; // Adjust the path as necessary
 import { useAuth } from './context/authContext/index.js'; // Adjust the import path as necessary
 import axios from 'axios';
 import PopUp from './components/PopUp';
+import Login from '@react-login-page/page3';
+// buttons
+import { Reset, Submit } from '@react-login-page/page3';
+// blocks
+import { Logo, Title, Welcome, ButtonAfter } from '@react-login-page/page3';
+// fields
+import { Email, Password } from '@react-login-page/page3';
 
-const Login = () => {
+import defaultBannerImage from '@react-login-page/page3/bg.jpeg';
+
+// Basic Components
+import { Button } from '@react-login-page/page3';
+
+const LoginComponant = () => {
     const navigate = useNavigate();
 
     const { setCurrentDBUser } = useAuth();
@@ -110,14 +122,48 @@ const Login = () => {
 
     return (
         <>
-            <div className="flex">
+            <div className="flex justify-center items-center min-h-screen bg-cover bg-center" style={{ backgroundImage: `url('path/to/your/background.jpg')` }}>
+                <div className="w-full h-screen flex flex-col justify-center">
+                    <Login>
+                        <Logo>⚛️</Logo>
+                        <Welcome>Welcome back! Log in to your account.</Welcome>
+
+                        {/* Custom Email input, renamed to "phone", with additional customization */}
+                        <Email type="email"
+                            name="email"
+                            placeholder="Email"
+                            required onChange={(e) => setEmail(e.target.value)} >
+                            <div>xx</div> {/* This might not be supported depending on how Email component is implemented */}
+                        </Email>
+
+                        {/* Password field with specified control properties */}
+                        <Password type="password"
+                            name="password"
+                            placeholder="Password"
+                            required onChange={(e) => setPassword(e.target.value)} index={2} />
+                        {/* Example showing how to conditionally render Password based on a prop */}
+                        {/* <Password index={2} visible={false} /> */}
+
+                        {/* Submission and reset buttons */}
+                        <Submit onClick={handleLogin} />
+                        <Reset />
+
+                        {/* Additional content placed after the submit/reset buttons */}
+                        {/* <ButtonAfter>
+                    Forgot <a href="#">Username / Password?</a>
+                </ButtonAfter> */}
+                    </Login>
+
+                </div>
+            </div >
+            {/* <div className="flex">
                 <div className="2xl:w-[60%] xl:w-[50%] lg:w-[50%] md:w-[50%] sm:w-[50%] w-0">
                     <img src="/img/hero.jpg" className="h-[100vh]" />
                 </div>
                 <div className="2xl:w-[40%] xl:w-[50%] lg:w-[50%] md:w-[50%] sm:w-[50%] w-full">
                     <div className="my-[109px] mx-[70px] login-style shadow-style">
                         <div className="flex justify-center items-center">
-                            <div className="text-2xl font-bold mb-5">Login</div>
+                            <div className="text-2xl font-bold mb-5">login</div>
                         </div>
 
                         <div className="">
@@ -166,11 +212,11 @@ const Login = () => {
                         <button className="button-style bg-gray-700 hover:bg-black" onClick={() => { navigate("/") }}>Go to home</button>
                     </div>
                 </div>
-            </div>
-            <PopUp isVisible={popUp.isVisible} message={popUp.message} onClose={() => setPopUp({ isVisible: false, message: '' })} />
+            </div> */}
+            < PopUp isVisible={popUp.isVisible} message={popUp.message} onClose={() => setPopUp({ isVisible: false, message: '' })} />
 
         </>
     );
 };
 
-export default Login;
+export default LoginComponant;
