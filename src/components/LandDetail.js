@@ -15,6 +15,8 @@ const LandDetail = () => {
     // console.log("land",location.state );
     const { land } = location.state; // Fallback to an empty object if state is undefined
 
+    const storedDBData = JSON.parse(localStorage.getItem('storedDBData'));
+    const isLandOwner = storedDBData.designation == "L" ? true : false;
 
 
     const handleThumbnailClick = (index) => {
@@ -73,7 +75,7 @@ const LandDetail = () => {
                         </div>
                         {/* Action Buttons */}
                         <div className="flex gap-2">
-                            <Button
+                            {!isLandOwner && <Button
                                 color="black"
                                 buttonType="filled"
                                 size="regular"
@@ -83,18 +85,22 @@ const LandDetail = () => {
                                 ripple="light"
                             >
                                 Application Request
-                            </Button>
-                            <Button
-                                color="black"
-                                buttonType="filled"
-                                size="regular"
-                                rounded={true}
-                                block={false}
-                                iconOnly={false}
-                                ripple="light"
-                                onClick={navigate("/chatpage")}>
-                                Message
-                            </Button>
+                            </Button>}
+
+                            {!isLandOwner &&
+                                <Button
+                                    color="black"
+                                    buttonType="filled"
+                                    size="regular"
+                                    rounded={true}
+                                    block={false}
+                                    iconOnly={false}
+                                    ripple="light"
+                                    onClick={navigate("/chatpage")}>
+                                    Message
+                                </Button>
+                            }
+
                         </div>
                     </div>
                 </div>

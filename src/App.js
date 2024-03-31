@@ -1,6 +1,5 @@
 import { React, useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import About from "./About";
 import Home from "./Home";
 import Lands from "./Lands";
 import ContactUs from "./ContactUs";
@@ -22,6 +21,8 @@ import LandApplications from "./components/LandApplications.js";
 import LandPosting from "./components/LandPosting.js";
 import LandDetail from "./components/LandDetail.js";
 import AddLand from "./AddLand.js";
+import CropRecommendationForm from "./components/CropRecommendationForm.js";
+import CropPredictionPage from "./components/CropPredictionPage.js";
 
 const App = () => {
 
@@ -66,8 +67,6 @@ const App = () => {
                   <Route path="/register" element={<SignUp />} />
                   <Route path="/logout" element={<LogoutButton />} />
                   <Route path="/" element={<Layout><Home /></Layout>} />
-                  <Route path="/about" element={<Layout><About /></Layout>} />
-                  <Route path="/contact" element={<Layout><ContactUs /></Layout>} />
                   <Route path="*" element={<ErrorPage />} />
 
                   {/* Farmer and Landowner Routes */}
@@ -97,6 +96,13 @@ const App = () => {
                     path="/digitalstorage"
                     element={
                       <ProtectedRoute component={DigitalStorage} />
+                    }
+                  />
+                  
+                  <Route
+                    path="/crop-recommendation"
+                    element={
+                      <ProtectedRoute component={CropPredictionPage} />
                     }
                   />
                   <Route

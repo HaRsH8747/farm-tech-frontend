@@ -2,12 +2,17 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 const Header = () => {
   const { currentDBUser } = useAuth();
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [notificationCount, setNotificationCount] = useState(0); // State to manage notification count
+
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -53,6 +58,11 @@ const Header = () => {
     return () => window.removeEventListener('scroll', controlNavbar);
   }, [lastScrollY]);
 
+  const handleScroll = (anchor) => (e) => {
+    e.preventDefault();
+    document.querySelector(anchor).scrollIntoView({ behavior: 'smooth' });
+  };
+
   const getActiveLinkStyles = ({ isActive }) =>
     isActive ? "text-teal-200" : "text-white hover:text-teal-200";
 
@@ -76,13 +86,27 @@ const Header = () => {
         </NavLink>
         {isLandOwner && (
           <NavLink to="/landposting" className={getActiveLinkStyles}>Postings</NavLink>
-        )}
-        <NavLink to="/about" className={getActiveLinkStyles}>About</NavLink>
-        <NavLink to="/contact" className={getActiveLinkStyles}>Contact</NavLink>
+          )}
+          <NavLink to="/crop-recommendation" className={getActiveLinkStyles}>Crop Recommendation</NavLink>
+        {/* <a href="#about" className={getActiveLinkStyles} onClick={handleScroll('#about')}>
+          About
+        </a>
+        <a href="#contact" className={getActiveLinkStyles} onClick={handleScroll('#contact')}>
+          Contact
+        </a> */}
       </nav>
-      <NavLink to="/login" className="bg-white text-green-900 px-4 py-2 rounded-full shadow-lg hover:bg-teal-600 transition-colors">
+      {!storedDBData && <NavLink to="/login" className="bg-white text-green-900 px-4 py-2 rounded-full shadow-lg hover:bg-teal-600 transition-colors">
         Login
       </NavLink>
+      }
+      {storedDBData && <button onClick={() => {
+        localStorage.removeItem("storedDBData");
+        navigate('/');
+      }} className="bg-white text-green-900 px-4 py-2 rounded-full shadow-lg hover:bg-teal-600 transition-colors">
+        Logout
+      </button>
+      }
+
     </header>
   );
 };

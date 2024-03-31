@@ -32,15 +32,20 @@ import ContactUs from './ContactUs';
 
 export function Home() {
 
+  const handleScroll = (anchor) => (e) => {
+    e.preventDefault();
+    document.querySelector(anchor).scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <>
       {/* <Header /> */}
       <div>
         <Video />
       </div>
-      <div className="bg-sky-50 p-10">
+      <div className="bg-sky-50">
         <div>
-          <section className="-mt-32 bg-white px-4 pb-20 pt-4">
+          <section className="-mt-32 bg-white px-4 pt-4">
             <div className="container mx-auto">
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {featuresData.map(
@@ -60,7 +65,7 @@ export function Home() {
                   )
                 )}
               </div>
-              <div className="mt-52 flex flex-wrap items-center">
+              <div className="mt-32 flex flex-wrap items-center">
                 <div className="mx-auto -mt-8 w-full px-4 md:w-5/12">
                   <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-blue-gray-900 p-2 text-center shadow-lg">
                     <FingerPrintIcon className="h-8 w-8 text-white " />
@@ -130,11 +135,39 @@ export function Home() {
             </div>
           </section>
         </div>
-        <section className="px-4 pt-20 pb-48">
+        <section className="relative bg-white mt-28">
+          <div className="container mx-auto">
+            <PageTitle section="Start with Sustainability" heading="Embracing Sustainability"  >
+              In the face of today's climate challenges, experts like Ted Scambos from the National Oceanic and Atmospheric Administration inspire our commitment to sustainable land management. Our platform encourages practices that nourish our planet, leveraging cutting-edge agricultural technology to reduce environmental impact and pave the way for a sustainable future for all.            </PageTitle>
+            <div className="mx-auto mt-20 grid max-w-5xl grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3">
+              {contactData.map(({ title, icon, description }) => (
+                <Card
+                  key={title}
+                  color="transparent"
+                  shadow={false}
+                  className="text-center text-blue-gray-900"
+                >
+                  <div className="mx-auto mb-6 grid h-14 w-14 place-items-center rounded-full bg-blue-gray-900 shadow-lg shadow-gray-500/20">
+                    {React.createElement(icon, {
+                      className: "w-5 h-5 text-white",
+                    })}
+                  </div>
+                  <Typography variant="h5" color="blue-gray" className="mb-2">
+                    {title}
+                  </Typography>
+                  <Typography className="font-normal text-blue-gray-500">
+                    {description}
+                  </Typography>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+        <section id="about" className="px-4 pt-20 mt-10">
           <div className="container mx-auto">
             <PageTitle section="Our Team" heading="Here are our heroes">
               "Alone we can do so little, together we can do so much"
-If the team is diligent, then victory should come and help people"
+              If the team is diligent, then victory should come and help people"
             </PageTitle>
             <div className="mt-24 grid grid-cols-1 gap-12 gap-x-24 md:grid-cols-2 xl:grid-cols-4">
               {teamData.map(({ img, name, position, socials }) => (
@@ -157,92 +190,12 @@ If the team is diligent, then victory should come and help people"
             </div>
           </div>
         </section>
-        <section className="relative bg-white py-24 px-4">
-          <div className="container mx-auto">
-            <PageTitle section="Start with Sustainability" heading="Embracing Sustainability"  >
-            In the face of today's climate challenges, experts like Ted Scambos from the National Oceanic and Atmospheric Administration inspire our commitment to sustainable land management. Our platform encourages practices that nourish our planet, leveraging cutting-edge agricultural technology to reduce environmental impact and pave the way for a sustainable future for all.            </PageTitle>
-            <div className="mx-auto mt-20 mb-48 grid max-w-5xl grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3">
-              {contactData.map(({ title, icon, description }) => (
-                <Card
-                  key={title}
-                  color="transparent"
-                  shadow={false}
-                  className="text-center text-blue-gray-900"
-                >
-                  <div className="mx-auto mb-6 grid h-14 w-14 place-items-center rounded-full bg-blue-gray-900 shadow-lg shadow-gray-500/20">
-                    {React.createElement(icon, {
-                      className: "w-5 h-5 text-white",
-                    })}
-                  </div>
-                  <Typography variant="h5" color="blue-gray" className="mb-2">
-                    {title}
-                  </Typography>
-                  <Typography className="font-normal text-blue-gray-500">
-                    {description}
-                  </Typography>
-                </Card>
-              ))}
-            </div>
-            {/* <PageTitle section="Contact Us" heading="Want to work with us?">
-              Complete this form and we will get back to you in 24 hours.
-            </PageTitle>
-            <form className="mx-auto w-full mt-12 lg:w-5/12">
-              <div className="mb-8 flex gap-8">
-                <Input variant="outlined" size="lg" label="Full Name" />
-                <Input variant="outlined" size="lg" label="Email Address" />
-              </div>
-              <Textarea variant="outlined" size="lg" label="Message" rows={8} />
-              <div className="mb-8">
-              <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-                                <input
-                                    className="h-[20px] w-[18px] mr-4 mt-4"
-                                    type="checkbox"
-                                    name="checkbox"
-                                    value="1"
-                                />
-                                <div className="mt-4 text-[#607d8b]">I agree the
-                                <a
-                                  href="#"
-                                  className="font-medium transition-colors hover:text-gray-900"
-                                >
-                                  &nbsp;Terms and Conditions
-                                </a>
-                                </div>
-                            </div>
-                            </div>
-              <Button variant="gradient" size="lg" className="mt-8" fullWidth>
-                Send Message
-              </Button>
-            </form> */}
-          </div>
-        </section>
-      </div>
-      
-      <section className="bg-sky-50 p-5 lg:p-10">
-  <div className="container mx-auto">
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {farmData.map(({ Title, City, Province, LandSize, AvailableFor, SoilType }) => (
-        <div key={Title} className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden hover:shadow-2xl hover:scale-105 transition-shadow duration-300">
-          <a href="#">
-          <img className="w-full h-56 object-cover object-center rounded-bl-lg rounded-br-lg hover:shadow-2xl hover:scale-105" src="/img/farm1.jpg" alt={Title} />
-          </a>
-          <div className="p-5">
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">{Title}</h5>
-            <p className="mb-2 font-normal text-gray-700 text-shadow-default"><span className="font-semibold">City:</span> {City},{Province}</p>
-              <p className="mb-2 font-normal text-gray-700 text-shadow-default"><span className="font-semibold">Land Size:</span> {LandSize} Acre</p>
-            <p className="mb-2 font-normal text-gray-700"><span className="font-semibold">Available For:</span> {AvailableFor}</p>
-            <p className="mb-4 font-normal text-gray-700"><span className="font-semibold">Soil Type:</span> {SoilType}</p>
-            <Button variant="filled">Read more</Button>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
 
-      <div className="App">
-      <ContactUs />
-    </div>
+      </div>
+      <section id="contact" className="h-screen">
+        <ContactUs />
+      </section>
+
     </>
   );
 }

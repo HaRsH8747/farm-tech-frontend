@@ -21,7 +21,10 @@ const ApplicationCard = ({ application, onAccept, onIgnore }) => {
           buttonType="filled"
           size="regular"
           rounded={true}
-          onClick={onAccept}
+          onClick={() => {
+            console.log("app clicked", application.landowner, application.farmer, application.landid);
+            onAccept(application.id, application.landowner, application.farmer, application.landid)
+          }} // Assuming each application has a unique ID
           block={false}
           iconOnly={false}
           ripple="light"
@@ -34,7 +37,7 @@ const ApplicationCard = ({ application, onAccept, onIgnore }) => {
           buttonType="filled"
           size="regular"
           rounded={true}
-          onClick={onIgnore}
+          onClick={() => onIgnore(application.id)}
           block={false}
           iconOnly={false}
           ripple="light"

@@ -125,7 +125,10 @@ const LoginComponant = () => {
             <div className="flex justify-center items-center min-h-screen bg-cover bg-center" style={{ backgroundImage: `url('path/to/your/background.jpg')` }}>
                 <div className="w-full h-screen flex flex-col justify-center">
                     <Login>
-                        <Logo>⚛️</Logo>
+                        <Logo>
+                        <img src="/login.jpg" style={{ width: '100px', height: 'auto' }} />
+
+                        </Logo>
                         <Welcome>Welcome back! Log in to your account.</Welcome>
 
                         {/* Custom Email input, renamed to "phone", with additional customization */}

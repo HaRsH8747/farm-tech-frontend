@@ -3,20 +3,20 @@ import React from 'react';
 import styled from 'styled-components';
 
 function DetailsComponent({ marker }) {
-    return (
-        <>
-            <Wrapper>
-                <div className="card">
-                    <h2 className="title">{marker.name}</h2>
-                    <p className="info"><strong>City:</strong> {marker.city}</p>
-                    <p className="info"><strong>Province:</strong> {marker.province}</p>
-                    <p className="info"><strong>Storage Capacity:</strong> {marker.storageCapacity}</p>
-                    <p className="info"><strong>Storage Type:</strong> {marker.storageType}</p>
-                    <p className="info last"><strong>Minimum Renting Period:</strong> {marker.minRentingPeriod}</p>
-                </div>
-            </Wrapper>
-        </>
-    );
+  return (
+    <>
+      <Wrapper>
+        <div className="card">
+          <h2 className="title text-2xl"><strong>{marker.name}</strong></h2>
+          <p className="info"><strong>City:</strong> {marker.city}</p>
+          <p className="info"><strong>Province:</strong> {marker.province}</p>
+          <p className="info"><strong>Storage Capacity:</strong> {marker.capacity} Cubic/Meters</p>
+          <p className="info"><strong>Storage Type:</strong> {marker.crop_type}</p>
+          <p className="info last"><strong>Minimum Renting Period:</strong> {marker.min_renting_period} Months</p>
+        </div>
+      </Wrapper>
+    </>
+  );
 }
 
 const Wrapper = styled.section`

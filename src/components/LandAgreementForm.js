@@ -1,21 +1,48 @@
 import React, { useState } from 'react';
 import { Button, Checkbox, Label, TextInput, Textarea, Select } from 'flowbite-react';
+import axios from 'axios'; // Make sure to import Axios at the top of your file
+
+// const facilitiesOptions = [
+//   { value: 'irrigation', label: 'Irrigation System' },
+//   { value: 'tractor', label: 'Tractor' },
+//   { value: 'storage', label: 'Storage Unit' },
+//   { value: 'harvester', label: 'Harvester' },
+//   { value: 'plough', label: 'Plough' },
+//   { value: 'seedDrill', label: 'Seed Drill' },
+//   { value: 'sprinklerSystem', label: 'Sprinkler System' },
+//   { value: 'fertilizerSpreaders', label: 'Fertilizer Spreaders' },
+//   // Add more options as needed
+// ];
 
 const facilitiesOptions = [
-  { value: 'irrigation', label: 'Irrigation System' },
-  { value: 'tractor', label: 'Tractor' },
-  { value: 'storage', label: 'Storage Unit' },
-  { value: 'harvester', label: 'Harvester' },
-  { value: 'plough', label: 'Plough' },
-  { value: 'seedDrill', label: 'Seed Drill' },
-  { value: 'sprinklerSystem', label: 'Sprinkler System' },
-  { value: 'fertilizerSpreaders', label: 'Fertilizer Spreaders' },
+  'Housing',
+  'Irrigation capacity',
+  'Irrigation equipment',
+  'Greenhouse',
+  'Fencing',
+  'Agricultural machinery',
+  'Cold storage',
+  'Processing facilities',
+  'Other facilities',
+  // Add more options as needed
+];
+
+const cropList = [
+  'Field Crops (grains or beans)',
+  'Flowers',
+  'Fruit/berries/grapes',
+  'Hay or forage crops',
+  'Herbs',
+  'Livestock',
+  'Seeds, seedlings or nursery stock',
+  'Vegetables',
+  'Other products',
   // Add more options as needed
 ];
 
 function LandAgreementForm(props) {
 
-  const { landOwnerName, farmerName, landAddress } = props.preFormData;
+  const { landOwnerId, farmerId, landId, landOwnerName, farmerName, landAddress } = props.preFormData;
 
   const [formData, setFormData] = useState({
     landOwnerName: landOwnerName,
@@ -23,7 +50,7 @@ function LandAgreementForm(props) {
     landAddress: landAddress,
     agreementDuration: '',
     durationType: 'years',
-    decidedCrop: '',
+    decidedCrop: [0],
     facilitiesAndEquipment: '',
     agreementDescription: '',
   });
@@ -34,16 +61,53 @@ function LandAgreementForm(props) {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value,
-    });
+    if (name === 'decidedCrop') {
+      // const selectedOptionIndex = cropList.findIndex(option => option.value === value);
+      const selectedOptionIndex = cropList.map((selectedValue, index) => {
+        if(value === selectedValue){
+          return index;
+        }
+      });
+      setFormData({
+        ...formData,
+        product_planning_to_produce: [selectedOptionIndex], // Store the index in the desired array
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: type === 'checkbox' ? checked : value,
+      });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleInputChangeProduct = (e) => {
+    const { name, value, type, checked } = e.target;
+
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    alert('Agreement Submitted Successfully!');
+
+    // Transform formData to the API's expected format
+    const apiPayload = {
+      landowner: landOwnerId,
+      farmer: farmerId,
+      landid: landId, // Assuming landAddress is the ID, adjust as necessary
+      agreement_duration: formData.agreementDuration + ' ' + formData.durationType, // Combining duration and type
+      product_planning_to_produce: [1], // Assuming a single crop, adjust as necessary
+      facility_and_equipment_agreed_to: formData.facilitiesAndEquipment,
+      agreement_description: formData.agreementDescription,
+    };
+
+    try {
+      const response = await axios.post("http://192.168.2.18:8000/api/agreements", apiPayload);
+
+      console.log(response.data); // For debugging, remove or adjust as necessary
+      alert('Agreement Submitted Successfully!');
+    } catch (error) {
+      console.error('Failed to submit agreement:', error);
+      alert('Failed to submit agreement. Please try again.');
+    }
   };
 
   return (
@@ -119,13 +183,12 @@ function LandAgreementForm(props) {
 
           <div>
             <Label htmlFor="decidedCrop">Decided Crop</Label>
-            <TextInput
-              id="decidedCrop"
-              name="decidedCrop"
-              value={formData.decidedCrop}
-              onChange={handleInputChange}
-              required
-            />
+            <Select id="decidedCrop" name="decidedCrop" onChange={handleInputChange} required>
+              <option>Select Decided Crop</option>
+              {cropList.map((option) => (
+                <option>{option}</option>
+              ))}
+            </Select>
           </div>
 
           <div>
@@ -133,7 +196,7 @@ function LandAgreementForm(props) {
             <Select id="facilitiesAndEquipment" name="facilitiesAndEquipment" value={formData.facilitiesAndEquipment} onChange={handleInputChange} required>
               <option>Select Facilities/Equipment</option>
               {facilitiesOptions.map((option) => (
-                <option key={option.value} value={option.value}>{option.label}</option>
+                <option>{option}</option>
               ))}
             </Select>
           </div>

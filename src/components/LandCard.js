@@ -1,14 +1,18 @@
 import React from 'react';
 import { Button } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const LandCard = ({ lands, onLandClick }) => {
+  const navigate = useNavigate();
+
   return (
     <section className="bg-sky-50 p-5 lg:p-10">
       <div className="container mx-auto">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {lands.map((land) => (
-            <div key={land.Title} onClick={() => onLandClick(land.id)} className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+            <div key={land.Title} onClick={() => onLandClick(land)} className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden hover:shadow-2xl transition-shadow duration-300">
               <a href="#">
                 <img className="w-full h-56 object-cover object-center" src="/img/farm1.jpg" alt={land.Title} />
               </a>

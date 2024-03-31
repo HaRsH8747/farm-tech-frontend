@@ -1,57 +1,53 @@
 import React, { useState, useEffect } from "react";
 
 function DropdownMenu({ data, fields, fieldNames, onFiltersChange }) {
-  // State to hold the unique values for each field
+  // Initialize the state with all dropdowns closed
   const [uniqueValues, setUniqueValues] = useState({});
   const [selectedFilters, setSelectedFilters] = useState(
     fields.reduce((acc, field) => ({ ...acc, [field]: [] }), {})
   );
 
-  // Effect to calculate unique values whenever the data or fields props change
+  // Adjusting to use an object for tracking open states of multiple dropdowns
+  const [openDropdowns, setOpenDropdowns] = useState(
+    fields.reduce((acc, field) => ({ ...acc, [field]: false }), {})
+  );
+
   useEffect(() => {
     const newUniqueValues = fields.reduce((acc, field) => {
-      const values = Array.from(new Set(data.map((item) => item[field])));
-      acc[field] = values;
+      acc[field] = Array.from(new Set(data.map((item) => item[field])));
       return acc;
     }, {});
     setUniqueValues(newUniqueValues);
   }, [data, fields]);
 
   useEffect(() => {
-    onFiltersChange(selectedFilters); // Notify parent component of the filter change
+    onFiltersChange(selectedFilters);
   }, [selectedFilters, onFiltersChange]);
-
-  const [openDropdown, setOpenDropdown] = useState(null);
 
   // Toggle the dropdown open state
   const toggleDropdown = (field) => {
-    setOpenDropdown(openDropdown === field ? null : field);
+    setOpenDropdowns(prev => ({ ...prev, [field]: !prev[field] }));
   };
 
   const handleCheckboxChange = (field, value, isChecked) => {
     setSelectedFilters((prev) => {
       const updatedFilters = { ...prev };
       if (isChecked) {
-        // Add value to the filter
         updatedFilters[field] = [...updatedFilters[field], value];
       } else {
-        // Remove value from the filter
-        updatedFilters[field] = updatedFilters[field].filter(
-          (v) => v !== value
-        );
+        updatedFilters[field] = updatedFilters[field].filter((v) => v !== value);
       }
       return updatedFilters;
     });
   };
 
-  // Function to get the visible name for a field
   const getFieldName = (field) => {
     const fieldObj = fieldNames.find((f) => f.field === field);
-    return fieldObj ? fieldObj.name : field; // Fallback to field if no name is found
+    return fieldObj ? fieldObj.name : field;
   };
 
   return (
-<div className="bg-gray-200 rounded-lg shadow-lg p-4 divide-y divide-gray-300 transition duration-300 transform hover:scale-101 hover:shadow-2xl border border-gray-700">
+    <div className="bg-gray-200 rounded-lg shadow-lg p-4 divide-y divide-gray-300 transition duration-300 transform hover:scale-101 hover:shadow-2xl border border-gray-700">
       {fields.map((field, idx) => (
         <div key={field} className={`accordion-item ${idx > 0 ? "pt-4" : ""}`}>
           <h3
@@ -59,30 +55,24 @@ function DropdownMenu({ data, fields, fieldNames, onFiltersChange }) {
             className="text-lg font-semibold mb-2 cursor-pointer hover:text-blue-600 flex justify-between items-center"
           >
             {getFieldName(field)}
-            {/* Icon for the dropdown arrow */}
             <span className="accordion-icon">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className={`h-4 w-4 inline-block transform transition-transform ${
-                  openDropdown === field ? "rotate-180" : "rotate-0"
+                  openDropdowns[field] ? "rotate-180" : "rotate-0"
                 }`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
                 strokeWidth="2"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19 9l-7 7-7-7"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </span>
           </h3>
-          {/* Content visibility controlled by openDropdown state */}
           <div
             className={`${
-              openDropdown === field ? "block" : "hidden"
+              openDropdowns[field] ? "block" : "hidden"
             } transition-all duration-500`}
           >
             {uniqueValues[field]?.map((value, index) => (
@@ -96,7 +86,6 @@ function DropdownMenu({ data, fields, fieldNames, onFiltersChange }) {
                     handleCheckboxChange(field, value, e.target.checked)
                   }
                 />
-
                 <label
                   htmlFor={`checkbox-${field}-${index}`}
                   className="ml-2 text-gray-700 cursor-pointer hover:text-gray-900"
