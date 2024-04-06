@@ -1,49 +1,97 @@
 // DetailsComponent.js
-import React from 'react';
+import { React, useState } from 'react';
 import styled from 'styled-components';
+import { Modal } from "flowbite-react";
+import StorageAgreementForm from './StorageAgreementForm';
+import { Button } from "@material-tailwind/react";
+
 
 function DetailsComponent({ marker }) {
+
+  const [openModal, setOpenModal] = useState(false); // State to control modal visibility
+
   return (
     <>
       <Wrapper>
         <div className="card">
           <h2 className="title text-2xl"><strong>{marker.name}</strong></h2>
-          <p className="info"><strong>City:</strong> {marker.city}</p>
-          <p className="info"><strong>Province:</strong> {marker.province}</p>
+          <p className="info"><strong>Street Address:</strong> {marker.street_address}</p>
+          <p className="info"><strong>City:</strong> {marker.city}, {marker.province}</p>
           <p className="info"><strong>Storage Capacity:</strong> {marker.capacity} Cubic/Meters</p>
           <p className="info"><strong>Storage Type:</strong> {marker.crop_type}</p>
           <p className="info last"><strong>Minimum Renting Period:</strong> {marker.min_renting_period} Months</p>
+          <div className="flex justify-end">
+            <Button
+              className="openFormButton"
+              onClick={() => setOpenModal(true)}
+            >
+              Inquire Now
+            </Button>
+          </div>
         </div>
       </Wrapper>
+      {openModal && (
+        <Modal show={openModal} onClose={() => setOpenModal(false)} size="4xl">
+          <Modal.Header>
+            <h2 className="text-2xl font-semibold mb-5 text-gray-900 text-center">Personal Information</h2>
+          </Modal.Header>
+          <Modal.Body>
+            <StorageAgreementForm marker={marker} />
+          </Modal.Body>
+        </Modal>
+      )}
     </>
   );
 }
 
 const Wrapper = styled.section`
-/* DetailsComponent.css */
-.card {
-  border: 1px solid #e2e8f0; /* A light gray border */
-  border-radius: 0.5rem; /* 8px border radius for a smoother curve */
-  padding: 1.5rem; /* 24px padding */
-  margin-top: 1rem; /* 16px top margin */
-  background-color: #f8fafc; /* A very light shade of blue as background color */
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* A soft shadow to 'lift' the card */
-}
+  .card {
+    position: relative; /* Needed to position the pseudo-element */
+    border: 1px solid black; /* Black border */
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    background-color: #f8fafc;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
-.title {
-  color: #2c5282; /* Dark blue color for the title for contrast */
-  margin-bottom: 0.75rem; /* 12px bottom margin */
-}
+    /* Create a pseudo-element to serve as an overlay */
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('img/cropstorage2.jpg') no-repeat center center; /* Replace with your image path */
+      background-size: cover;
+      opacity: 0.1; /* Reduced opacity for the overlay */
+      border-radius: inherit; /* Match the border radius of the parent */
+      z-index: 0; /* Sit below the card content */
+    }
 
-.info {
-  color: #4a5568; /* Dark gray for the text for better readability */
-  margin-bottom: 0.75rem; /* Consistent bottom margin for all paragraphs */
-  line-height: 1.75; /* A comfortable line-height for reading */
-}
+    /* Make sure the card content sits above the pseudo-element */
+    * {
+      position: relative;
+      z-index: 1;
+    }
+  }
 
-.info.last {
-  margin-bottom: 0; /* No bottom margin for the last element */
+  .title {
+    color: #2c5282; /* Dark blue color for the title for contrast */
+    margin-bottom: 0.75rem; /* 12px bottom margin */
+  }
+
+  .info {
+    color: #4a5568; /* Dark gray for the text for better readability */
+    margin-bottom: 0.75rem; /* Consistent bottom margin for all paragraphs */
+    line-height: 1.75; /* A comfortable line-height for reading */
+  }
+
+  .info.last {
+    margin-bottom: 0; /* No bottom margin for the last element */
+  }
 }
 `;
+
 
 export default DetailsComponent;

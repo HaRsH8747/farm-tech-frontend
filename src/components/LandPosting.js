@@ -1,5 +1,6 @@
 import { Button } from "@material-tailwind/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const LandPosting = () => {
 
@@ -18,6 +19,7 @@ const LandPosting = () => {
     const resetFormState = () => {
         setFormState({
             title: "",
+            landName: "",
             description: "",
             address: "",
             streetAddress: "",
@@ -40,6 +42,7 @@ const LandPosting = () => {
         title: "",
         description: "",
         address: "",
+        landName: "",
         streetAddress: "",
         city: "",
         province: "",
@@ -53,6 +56,7 @@ const LandPosting = () => {
         files: [],
     });
     const [imagePreview, setImagePreview] = useState([]);
+    const [imageIds, setImageIds] = useState([]);
     const [uploadedFiles, setUploadedFiles] = useState([]);
 
     const handleInputChange = (event) => {
@@ -73,15 +77,51 @@ const LandPosting = () => {
         setImagePreview(currentPreviews => currentPreviews.filter((_, index) => index !== indexToRemove));
     };
 
+    const uploadImages = (files) => {
+        // Create an instance of FormData
+        const formData = new FormData();
+
+        // Append each file to the 'images' field
+        Array.from(files).forEach(file => {
+            formData.append('images', file);
+        });
+
+        // Axios request configuration
+        const config = {
+            method: 'post',
+            url: 'http://127.0.0.1:8000/upload_images/?images=',
+            data: formData,
+            redirect: 'follow'
+        };
+
+        // Returning the axios call
+        return axios(config);
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const formData = new FormData();
-        // Convert latitude and longitude to float values. Use dummy values or form inputs as needed.
-        formData.append('latitude', parseFloat(formState.latitude || '0')); // Replace '0' with actual state values or defaults
-        formData.append('longitude', parseFloat(formState.longitude || '0')); // Replace '0' with actual state values or defaults
+        if (uploadedFiles.length === 0) {
+            console.error("At least one image is required.");
+            setShowErrorPopup(true); // Show error popup
+            return; // Stop the submission or handle accordingly
+        }
 
-        // Assuming all other form fields are correctly handled as strings
+        uploadImages(uploadedFiles)
+            .then(response => {
+                setImageIds(response.data.map(item => item.id));
+                // console.log(response.data)
+            })
+            .catch(error => console.log('error', error));
+
+    };
+
+    useEffect(() => {
+        const formData = new FormData();
+
+        formData.append('latitude', parseFloat(formState.latitude || '0'));
+        formData.append('longitude', parseFloat(formState.longitude || '0'));
+        formData.append('land_name', formState.streetAddress);
         formData.append('street_address', formState.streetAddress);
         formData.append('city', formState.city);
         formData.append('province', formState.province);
@@ -91,49 +131,25 @@ const LandPosting = () => {
         formData.append('and_currently_being_used_for', formState.landCurrentUse);
         formData.append('facility_and_equipment', formState.facilities);
         formData.append('experience_needed', formState.experience);
-
-
         const storedDBData = JSON.parse(localStorage.getItem('storedDBData'));
-
-        // Convert extendeduser to an integer. Use an actual user ID or a placeholder as appropriate.
-        formData.append('extendeduser', parseInt(storedDBData?.id)); // Replace '1' with the actual user ID
-
-        // Append images. Ensure uploadedFiles state is correctly populated with File objects.
-        formData.append(`land_image`, [1]);
-        // uploadedFiles.forEach((file, index) => {
-        //     formData.append(`land_image[${index}]`, file);
-        // });
-
-        // Validate at least one image is added; otherwise, show an error or fallback action
-        if (uploadedFiles.length === 0) {
-            console.error("At least one image is required.");
-            setShowErrorPopup(true); // Show error popup
-            return; // Stop the submission or handle accordingly
-        }
+        formData.append('extendeduser', parseInt(storedDBData?.id));
+        imageIds.forEach((id) => {
+            formData.append('land_image', id);
+        });
 
         try {
-            const response = await fetch('http://192.168.2.18:8000/api/lands', {
-                method: 'POST',
-                body: formData,
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            console.log('Form successfully submitted', data);
-            resetFormState(); // Reset form fields
-            setShowPopup(true); // Show success popup
-            setTimeout(() => setShowPopup(false), 3000); // Automatically close the popup after 3 seconds
-            // Handle success scenario
+            const response = axios.post('http://127.0.0.1:8000/api/lands', formData).then(response => {
+                resetFormState(); // Reset form fields
+                setShowPopup(true); // Show success popup
+                setTimeout(() => setShowPopup(false), 3000); // Automatically close the popup after 3 seconds
+                // Handle success scenario
+            }).catch(error => console.log('error', error));;
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
             // Handle error scenario
         }
-    };
-    // Additional input fields can be added here in similar fashion to the existing ones.
-    // ...
+    }, [imageIds]);
+
     return (
         <div className="container mx-auto p-4">
             <div className="bg-gray-100 p-6 rounded-lg shadow-2xl border border-1 border-gray-400">
@@ -141,6 +157,27 @@ const LandPosting = () => {
                 <div className="flex flex-col md:flex-row -mx-3">
                     <div className="w-full md:w-1/2 px-3">
                         <form onSubmit={handleSubmit}>
+
+                            {/* Street Address Input */}
+
+                            <div className="mb-4">
+                                <label
+                                    htmlFor="landName"
+                                    className="block text-gray-700 text-sm font-bold mb-2"
+                                >
+                                    Land Name
+                                </label>
+                                <input
+                                    required
+                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="landName"
+                                    name="landName"
+                                    type="text"
+                                    placeholder="Land Name"
+                                    value={formState.landName}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
 
                             {/* Street Address Input */}
 

@@ -75,7 +75,7 @@ const Lands = () => {
     const fetchData = async () => {
       try {
         // Use Axios to fetch data
-        const response = await axios.get("http://192.168.2.18:8000/api/lands");
+        const response = await axios.get("http://127.0.0.1:8000/api/lands");
         setLands(response.data); // Axios automatically handles converting JSON data
       } catch (error) {
         console.error("Error fetching land data:", error);
@@ -88,6 +88,7 @@ const Lands = () => {
   const handleFiltersChange = (selectedFilters) => {
     setFilters(selectedFilters);
   };
+
 
   const filteredLands = lands.filter(land =>
     Object.entries(filters).every(([field, values]) => 
@@ -115,7 +116,7 @@ const Lands = () => {
             />
           </div>
           <div className="section section2">
-            <LandCard lands={filteredLands} />
+            <LandCard lands={filteredLands}/>
           </div>
         </div>
       </Wrapper>

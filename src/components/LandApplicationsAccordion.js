@@ -4,9 +4,15 @@ import ApplicationCard from "./ApplicationCard"; // Adjust the import path as ne
 // Example statuses for categorization
 const applicationStatusCategories = ['Pending', 'Accepted', 'Rejected'];
 
-const LandApplicationsAccordion = ({ applications, onAccept, onIgnore }) => {
+const LandApplicationsAccordion = ({ applications, farmersInfo, onAccept, onIgnore, onOpenFarmerProfile }) => {
     // Initialize an object to track the open state of each panel
-    const [openPanels, setOpenPanels] = useState({});
+    const [openPanels, setOpenPanels] = useState(
+        applicationStatusCategories.reduce((acc, status) => ({
+            ...acc,
+            [status]: true // Set initial state to true for all categories
+        }), {})
+    );
+
 
     const toggleDropdown = (status) => {
         setOpenPanels(prevState => ({
@@ -59,14 +65,19 @@ const LandApplicationsAccordion = ({ applications, onAccept, onIgnore }) => {
                     >
                         {applications
                             .filter((app) => app.status === status)
-                            .map((application, index) => (
-                                <ApplicationCard
+                            .map((application, index) => {
+
+                                const farmer = farmersInfo.find(farmer => farmer.userId === application.farmer);
+                                const farmerName = farmer ? farmer.username : 'Unknown Farmer';
+                                return (<ApplicationCard
                                     key={`${status}-${index}`}
                                     application={application}
                                     onAccept={onAccept}
                                     onIgnore={onIgnore}
-                                />
-                            ))}
+                                    farmerName={farmerName}
+                                    onOpenFarmerProfile={onOpenFarmerProfile}
+                                />)
+                            })}
                     </div>
                 </div>
             ))}

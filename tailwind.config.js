@@ -7,7 +7,12 @@ module.exports = withMT(
       './src/**/*.{js,jsx,ts,tsx}'
     ],
     theme: {
-      extend: {},
+      extend: {
+        colors: {
+          'custom-orange': '#ffa500',
+          'custom-purple': '##b08bf8',
+        },
+      },
     },
     plugins: [
       require('flowbite/plugin')

@@ -20,74 +20,74 @@ ChartJS.register(
 );
 
 const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-        labels: {
-          boxWidth: 20,
-          padding: 20,
-          font: {
-            size: 14,
-            weight: 'bold',
-            family: 'Roboto, sans-serif',
-            color: '#000000', // Light text for contrast against dark background
-          },
-        },
-      },
-      title: {
-        display: true,
-        text: 'Comparative Crop Revenue Analysis',
-        color: '#000000', // Light text for contrast against dark background
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
+      labels: {
+        boxWidth: 20,
+        padding: 20,
         font: {
-          size: 18,
+          size: 14,
           weight: 'bold',
           family: 'Roboto, sans-serif',
+          color: '#000000', // Light text for contrast against dark background
         },
       },
     },
-    scales: {
-      x: {
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-        ticks: {
-          color: '#000000', // Light text for contrast
-          font: {
-            size: 12,
-          },
-        },
+    title: {
+      display: true,
+      text: 'Comparative Crop Revenue Analysis',
+      color: '#000000', // Light text for contrast against dark background
+      font: {
+        size: 18,
+        weight: 'bold',
+        family: 'Roboto, sans-serif',
       },
-      y: {
-        beginAtZero: true,
-        grid: {
-          drawBorder: false,
-          color: 'rgba(128, 128, 128, 0.25)', // Medium gray lines for the grid with transparency
-        },
-        ticks: {
-          color: '#000000', // Light text for contrast
-          font: {
-            size: 12,
-          },
-          callback: function(value) {
-            return '$' + value;
-          },
+    },
+  },
+  scales: {
+    x: {
+      grid: {
+        display: false,
+        drawBorder: false,
+      },
+      ticks: {
+        color: '#000000', // Light text for contrast
+        font: {
+          size: 12,
         },
       },
     },
-    animation: {
-      duration: 2000,
-      easing: 'easeOutCubic',
-    },
-    elements: {
-      bar: {
-        borderRadius: 20,
-        borderSkipped: false,
+    y: {
+      beginAtZero: true,
+      grid: {
+        drawBorder: false,
+        color: 'rgba(128, 128, 128, 0.25)', // Medium gray lines for the grid with transparency
+      },
+      ticks: {
+        color: '#000000', // Light text for contrast
+        font: {
+          size: 12,
+        },
+        callback: function (value) {
+          return '$' + value;
+        },
       },
     },
-  };
-  
+  },
+  animation: {
+    duration: 2000,
+    easing: 'easeOutCubic',
+  },
+  elements: {
+    bar: {
+      borderRadius: 20,
+      borderSkipped: false,
+    },
+  },
+};
+
 
 function CropRecommendationForm() {
   const [inputs, setInputs] = useState({
@@ -98,7 +98,7 @@ function CropRecommendationForm() {
     ph: "",
     rainfall: "",
   });
-const inputBaseClasses = "mt-1 block w-full p-3 bg-white-900 border border-gray-300 rounded-xl shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out";
+  const inputBaseClasses = "mt-1 block w-full p-3 bg-white-900 border border-gray-300 rounded-xl shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out";
   const labelClasses =
     "block text-base font-medium text-gray-800 mb-1 tracking-wide font-roboto";
   const hoverEffect = "hover:shadow-2xl"; // Shadow will increase on hover for a nice effect
@@ -115,24 +115,24 @@ const inputBaseClasses = "mt-1 block w-full p-3 bg-white-900 border border-gray-
         label: "Potential Revenue ($)",
         data: [1200, 950, 1100, 900, 1050],
         backgroundColor: [
-            "rgba(41, 128, 185, 0.6)",   // Blue
-            "rgba(46, 204, 113, 0.6)",   // Emerald
-            "rgba(241, 196, 15, 0.6)",   // Sunflower
-            "rgba(231, 76, 60, 0.6)",    // Alizarin
-            "rgba(155, 89, 182, 0.6)",   // Amethyst
-          ],
-          borderColor: [
-            "rgba(41, 128, 185, 1)",
-            "rgba(46, 204, 113, 1)",
-            "rgba(241, 196, 15, 1)",
-            "rgba(231, 76, 60, 1)",
-            "rgba(155, 89, 182, 1)",
-          ],
+          "rgba(41, 128, 185, 0.6)",   // Blue
+          "rgba(46, 204, 113, 0.6)",   // Emerald
+          "rgba(241, 196, 15, 0.6)",   // Sunflower
+          "rgba(231, 76, 60, 0.6)",    // Alizarin
+          "rgba(155, 89, 182, 0.6)",   // Amethyst
+        ],
+        borderColor: [
+          "rgba(41, 128, 185, 1)",
+          "rgba(46, 204, 113, 1)",
+          "rgba(241, 196, 15, 1)",
+          "rgba(231, 76, 60, 1)",
+          "rgba(155, 89, 182, 1)",
+        ],
         borderWidth: 1,
       },
     ],
   });
-  
+
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -162,10 +162,10 @@ const inputBaseClasses = "mt-1 block w-full p-3 bg-white-900 border border-gray-
 
   return (
     <div className="min-h-screen bg-sky-300 flex justify-center items-center">
-    <div className="container mx-auto p-4  rounded bg-sky-300" style={{ maxWidth: '1200px' }}>
-      <h2 className="text-2xl font-bold mb-8 text-center text-gray-700 mt-4 ">
-      Smart Crop Yield Forecasting
-      </h2>
+      <div className="container mx-auto p-4  rounded bg-sky-300" style={{ maxWidth: '1200px' }}>
+        <h2 className="text-2xl font-bold mb-8 text-center text-gray-700 mt-4 ">
+          Smart Crop Yield Forecasting
+        </h2>
         <div className="upper-section mb-8">
           <form
             onSubmit={handleSubmit}
@@ -279,9 +279,9 @@ const inputBaseClasses = "mt-1 block w-full p-3 bg-white-900 border border-gray-
 
             {/* Submit Button */}
             <div className="md:col-span-2">
-            <button className={buttonClasses}>
-  Get Recommendation
-</button>
+              <button className={buttonClasses}>
+                Get Recommendation
+              </button>
             </div>
           </form>
         </div>
@@ -304,10 +304,10 @@ const inputBaseClasses = "mt-1 block w-full p-3 bg-white-900 border border-gray-
           </div>
 
           {/* Chart Container */}
-      {/* Chart Container */}
-<div className="chart-container w-full lg:w-1/2" bg-sky-300> {/* Inline style for dark background */}
-  <Bar data={chartData} options={options} />
-</div>
+          {/* Chart Container */}
+          <div className="chart-container w-full lg:w-1/2" bg-sky-300> {/* Inline style for dark background */}
+            <Bar data={chartData} options={options} />
+          </div>
 
         </div>
       </div>

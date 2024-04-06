@@ -93,8 +93,8 @@ const options = {
 
 function CropPredictionPage() {
   const [inputs, setInputs] = useState({
-    soilType: "",
-    location: "",
+    soil_type_encoded: "",
+    region_encoded: "",
     temperature: "",
     humidity: "",
     rainfall: "",
@@ -107,37 +107,27 @@ function CropPredictionPage() {
   const buttonClasses =
     "py-3 px-6 w-full md:w-auto bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-md shadow-2xl transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50";
 
-  const [recommendation, setRecommendation] = useState([]);
+  const [recommendation, setRecommendation] = useState();
   const [apiData, setApiData] = useState(null); // State to hold fetched API data
 
   const [chartData, setChartData] = useState(null);
 
   // API endpoint for fetching top 5 crops and market prices
-  const API_ENDPOINT = "http://192.168.2.18:8000/predict";
+  const API_ENDPOINT = "http://127.0.0.1:8000/predict";
 
-  // useEffect(() => {
-  //   // Function to fetch data from API
+  useEffect(() => {
+    const recommendations = apiData?.map(crop => ({
+      crop: crop.crop,
+      marketPrice: crop.market_price.toFixed(2), // Formatting the price
+      info: `${crop.crop} has a current market price of $${crop.market_price.toFixed(2)} per kg.`
+    }));
 
-
-  //   // Call the fetchData function
-  //   fetchData();
-  // }, []);
-
-  const fetchData = async () => {
-    try {
-      axios.post("http://192.168.2.18:8000/predict", inputs)
-        .then(response => {
-          console.log('Response:', response.data);
-          setApiData(response.data)
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-      const data = await response.json();
-      setRecommendation(data.topCrops);
+    if (recommendation != null) {
+      setRecommendation(recommendations[0]);
       // Prepare data for chart
-      const labels = data.topCrops.map(crop => crop.name);
-      const marketPrices = data.topCrops.map(crop => crop.marketPrice);
+      const labels = apiData.map(crop => crop.crop);
+      const marketPrices = apiData.map(crop => crop.market_price);
+      console.log("labels", labels);
       setChartData({
         labels: labels,
         datasets: [
@@ -162,6 +152,22 @@ function CropPredictionPage() {
           },
         ],
       });
+    }
+
+
+  }, [apiData]);
+
+  const fetchData = async () => {
+    try {
+      axios.post("http://127.0.0.1:8000/predict", inputs)
+        .then(response => {
+          console.log('Response:', response.data);
+          setApiData(response.data)
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      setRecommendation(apiData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -169,25 +175,27 @@ function CropPredictionPage() {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setInputs((values) => ({ ...values, [name]: value }));
+    if (name === "region_encoded" || name === "soil_type_encoded") {
+      const selectedIndex = event.target.selectedIndex;
+      setInputs((values) => ({ ...values, [name]: selectedIndex }));
+    } else {
+      setInputs((values) => ({ ...values, [name]: value }));
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     fetchData();
-    if (apiData.length > 0) {
-      // Creating a recommendations array from the fetched data
-      const recommendations = apiData.map(crop => ({
-        crop: crop.Crop,
-        marketPrice: crop['Market Price'].toFixed(2), // Formatting the price
-        info: `${crop.Crop} has a current market price of $${crop['Market Price'].toFixed(2)} per kg.`
-      }));
-
-      setRecommendation(recommendations[0]);
-    } else {
-      console.log("No data available or data is still loading.");
-    }
   };
+
+  // useEffect(() => {
+  //   if (apiData.length > 0) {
+
+  //   } else {
+  //     console.log("No data available or data is still loading.");
+  //   }
+
+  // }, [apiData]);
 
 
   return (
@@ -196,7 +204,7 @@ function CropPredictionPage() {
         className="container mx-auto p-4 rounded bg-sky-300"
         style={{ maxWidth: "1200px" }}
       >
-        <h2 className="text-2xl font-bold mb-8 text-center text-gray-700 mt-4">
+        <h2 className="text-2xl font-bold mb-8 text-center text-gray-700">
           Smart Crop Yield Forecasting
         </h2>
         <div className="upper-section mb-8">
@@ -206,14 +214,13 @@ function CropPredictionPage() {
           >
             {/* Soil Type Dropdown */}
             <div className="mb-4 md:mb-0">
-              <label htmlFor="soilType" className={labelClasses}>
+              <label htmlFor="soil_type_encoded" className={labelClasses}>
                 Soil Type
               </label>
               <div>
                 <select
-                  id="soilType"
-                  name="soilType"
-                  value={inputs.soilType}
+                  id="soil_type_encoded"
+                  name="soil_type_encoded"
                   onChange={handleChange}
                   className={`${inputBaseClasses} ${hoverEffect}`}
                 >
@@ -225,31 +232,17 @@ function CropPredictionPage() {
                   <option value="silty">Silty</option>
                   <option value="chalky">Chalky</option>
                 </select>
-                <div className="absolute inset-y-0 right-0 flex items-center px-4 text-gray-700">
-                  <svg
-                    className="fill-current h-4 w-4"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
               </div>
             </div>
 
             {/* Location Field */}
             <div>
-              <label htmlFor="location" className={labelClasses}>
+              <label htmlFor="region_encoded" className={labelClasses}>
                 Location
               </label>
               <select
-                id="location"
-                name="location"
-                value={inputs.location}
+                id="region_encoded"
+                name="region_encoded"
                 onChange={handleChange}
                 className={`${inputBaseClasses} ${hoverEffect}`}
               >
@@ -268,19 +261,6 @@ function CropPredictionPage() {
                 <option value="NU">Nunavut</option>
                 <option value="YT">Yukon</option>
               </select>
-              <div className="absolute inset-y-0 right-0 flex items-center px-4 text-gray-700">
-                <svg
-                  className="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
             </div>
 
             {/* Temperature Field */}
@@ -340,27 +320,26 @@ function CropPredictionPage() {
         </div>
         <div className="lower-section flex flex-col lg:flex-row justify-between gap-4">
           {/* Recommendation Card */}
-          <div className="recommendation-card bg-gradient-to-tr from-blue-100 via-blue-50 to-white p-6 border border-blue-200 rounded-2xl shadow-2xl flex-1 transition duration-300 ease-in-out hover:shadow-inner">
-            {recommendation ? (
-              <>
-                <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                  {recommendation.crop}
+          {recommendation && (
+            <>
+              <div className="recommendation-card bg-gradient-to-tr from-blue-100 via-blue-50 to-white p-6 border border-blue-200 rounded-2xl shadow-2xl flex-1 transition duration-300 ease-in-out hover:shadow-inner">
+
+                <h3 className="text-3xl font-semibold mb-3 text-green-800 mt-3">
+                  <u>{recommendation.crop}</u>
                 </h3>
-                <p className="text-sm font-medium text-gray-700">
+                <p className="text-xl font-medium text-gray-700 mt-8">
                   Market Price: ${recommendation.marketPrice}
                 </p>
                 <p className="text-gray-600 mt-2">{recommendation.info}</p>
-              </>
-            ) : (
-              <p className="text-gray-500">No recommendation yet</p>
-            )}
-          </div>
+              </div>
+
+            </>
+          )}
 
           {/* Chart Container */}
           <div className="chart-container w-full lg:w-1/2">
             {chartData &&
               <Bar data={chartData} options={options} />
-
             }
           </div>
         </div>

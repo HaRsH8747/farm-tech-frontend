@@ -1,8 +1,8 @@
 export const teamData = [
   {
     img: "/img/team-1.jpg",
-    name: "Ryan Tompson",
-    position: "Web Developer",
+    name: "Vatsal Suvagiya",
+    position: "Frontend Developer",
     socials: [
       {
         color: "light-blue",
@@ -19,9 +19,9 @@ export const teamData = [
     ],
   },
   {
-    img: "/img/team-2.jpg",
-    name: "Romina Hadid",
-    position: "Marketing Specialist",
+    img: "/img/team-4.jpg",
+    name: "Reza",
+    position: "",
     socials: [
       {
         color: "light-blue",
@@ -29,17 +29,18 @@ export const teamData = [
       },
       {
         color: "blue",
-        name: "linkedin",
+        name: "facebook",
       },
       {
         color: "pink",
         name: "dribbble",
       },
     ],
-  },
+  }
+  ,
   {
     img: "/img/team-3.jpg",
-    name: "Alexa Smith",
+    name: "Keyur Dobariya",
     position: "UI/UX Designer",
     socials: [
       {
@@ -57,9 +58,9 @@ export const teamData = [
     ],
   },
   {
-    img: "/img/team-4.png",
-    name: "Jenna Kardi",
-    position: "Founder and CEO",
+    img: "/img/team-2.jpg",
+    name: "Harsh Moradiya",
+    position: "Frontend Developer",
     socials: [
       {
         color: "light-blue",
@@ -67,14 +68,15 @@ export const teamData = [
       },
       {
         color: "blue",
-        name: "facebook",
+        name: "linkedin",
       },
       {
         color: "pink",
         name: "dribbble",
       },
     ],
-  },
+  }
+  ,
 ];
 
 export default teamData;

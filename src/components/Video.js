@@ -1,82 +1,74 @@
 import React, { useRef, useEffect } from "react";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Typography,
-  Button,
-  IconButton,
-  Input,
-  Textarea,
-  Checkbox,
-} from "@material-tailwind/react";
+import styled from "styled-components";
+import { Typography } from "@material-tailwind/react";
+
+const VideoContainer = styled.div`
+  overflow: hidden;
+  position: relative;
+  height: calc(100vh - 20vh);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledVideo = styled.video`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+`;
+
+const OverlayContent = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  max-width: 800px;
+  padding: 0 20px;
+`;
+
+const VideoHeading = styled(Typography)`
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+`;
+
+const VideoParagraph = styled(Typography)`
+`;
 
 const Video = () => {
-    
-    const videoRef = useRef(null);
+  const videoRef = useRef(null);
 
-
-    useEffect(() => {
-        const videoElement = videoRef.current;
-        if (videoElement) {
-          // Disable controls initially
-          videoElement.controls = false;
-    
-          // Add event listener to disable controls on hover
-          videoElement.addEventListener("mouseenter", () => {
-            videoElement.controls = false;
-          });
-    
-          // Add event listener to enable controls when mouse leaves
-          videoElement.addEventListener("mouseleave", () => {
-            videoElement.controls = false;
-          });
-        }
-      }, []);
-
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      videoElement.controls = false;
+    }
+  }, []);
 
   return (
-    <div className="relative flex h-screen content-center items-center justify-center pt-16 pb-32">
-      <video
-          ref={videoRef}
-          className="absolute top-0 h-auto w-full bg-cover bg-center"
-          controls
-          autoPlay
-          loop
-          muted
-          playsInline
-        >
-          <source src="/video/bg_video.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+    <VideoContainer>
+      <StyledVideo ref={videoRef} autoPlay loop muted playsInline>
+        <source src="/video/bg_video.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </StyledVideo>
 
-        <div className="max-w-8xl container relative mx-auto">
-          <div className="flex flex-wrap items-center">
-            <div className="ml-auto mr-auto w-full px-4 text-center lg:w-8/12">
-              <Typography
-                variant="h1"
-                color="white"
-                className="text-7xl font-black"
-              >
-                Cultivating Connections, Harvesting Prosperity
-              </Typography>
-              <Typography
-                variant="lead"
-                color="white"
-                className="opacity-80"
-                style={{ margin: "20px", fontSize: "15px" }}
-              >
-                Join us on a transformative journey into the intricate world of
-                life, where fertile land meets purposeful cultivation. Together,
-                we sow the seeds of prosperity, nurturing sustainable growth and
-                shared abundance.
-              </Typography>
-              {/* <NavContainer><ExploreButton/></NavContainer> */}
-            </div>
-          </div>
-        </div>
-    </div>
-  )
-}
+      <OverlayContent>
+        <VideoHeading color="white" className="text-5xl font-black">
+          Cultivating Connections, Harvesting Prosperity
+        </VideoHeading>
+        <VideoParagraph color="white" className="opacity-90 mt-5">
+          Join us on a transformative journey into the intricate world of life,
+          where fertile land meets purposeful cultivation. Together, we sow the
+          seeds of prosperity, nurturing sustainable growth and shared abundance.
+        </VideoParagraph>
+      </OverlayContent>
+    </VideoContainer>
+  );
+};
 
-export default Video
+export default Video;

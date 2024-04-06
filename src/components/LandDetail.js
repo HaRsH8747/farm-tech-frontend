@@ -7,13 +7,15 @@ import { useNavigate } from 'react-router-dom';
 
 
 const LandDetail = () => {
-    const navigate = useNavigate();
-    const images = ['/img/farm3.jpg', '/img/farm4.jpg', '/img/farm5.jpg'];
-    const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-    const [selectedImage, setSelectedImage] = useState(images[selectedImageIndex]);
     const location = useLocation();
-    // console.log("land",location.state );
+
     const { land } = location.state; // Fallback to an empty object if state is undefined
+
+    const navigate = useNavigate();
+    // const images = ['/img/farm3.jpg', '/img/farm4.jpg', '/img/farm5.jpg'];
+    const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+    const [selectedImage, setSelectedImage] = useState(`http://127.0.0.1:8000/${land.land_image_names[selectedImageIndex]}`);
+    // console.log("land",location.state );
 
     const storedDBData = JSON.parse(localStorage.getItem('storedDBData'));
     const isLandOwner = storedDBData.designation == "L" ? true : false;
@@ -21,7 +23,7 @@ const LandDetail = () => {
 
     const handleThumbnailClick = (index) => {
         setSelectedImageIndex(index);
-        setSelectedImage(images[index]);
+        setSelectedImage(`http://127.0.0.1:8000/${land.land_image_names[index]}`);
     };
 
     // Image navigation functions...
@@ -40,13 +42,13 @@ const LandDetail = () => {
                     </div>
                     {/* Thumbnails */}
                     <div className="flex justify-center gap-2">
-                        {images.map((image, index) => (
+                        {land.land_image_names.map((image, index) => (
                             <button
                                 key={image}
                                 className={`rounded - lg overflow-hidden border-2 ${index === selectedImageIndex ? 'border-green-500' : 'border-transparent'}`}
                                 onClick={() => handleThumbnailClick(index)}
                             >
-                                <img src={image} alt={`Thumbnail ${index}`} className="w-20 h-20 object-cover" />
+                                <img src={`http://127.0.0.1:8000/${image}`} alt={`Thumbnail ${index}`} className="w-20 h-20 object-cover" />
                             </button>
                         ))}
                     </div>
@@ -63,7 +65,6 @@ const LandDetail = () => {
                             <h1 className="text-3xl font-bold text-green-600">{land.land_owner_name}</h1>
                             <p className="text-lg">{land.land_owner_name}</p>
                             <ul className="list-none space-y-1 text-lg">
-                                <li><strong>Description:</strong> Expansive vineyard with mature grapes.</li>
                                 <li><strong>Size:</strong>{land.land_size}</li>
                                 <li><strong>Address:</strong>{land.street_address + land.city + land.province}</li>
                                 <li><strong>Available For:</strong>{land.farmland_available_for}</li>
@@ -75,7 +76,9 @@ const LandDetail = () => {
                         </div>
                         {/* Action Buttons */}
                         <div className="flex gap-2">
-                            {!isLandOwner && <Button
+                            {/* {!isLandOwner && } */}
+
+                            <Button
                                 color="black"
                                 buttonType="filled"
                                 size="regular"
@@ -85,25 +88,27 @@ const LandDetail = () => {
                                 ripple="light"
                             >
                                 Application Request
-                            </Button>}
+                            </Button>
 
-                            {!isLandOwner &&
-                                <Button
-                                    color="black"
-                                    buttonType="filled"
-                                    size="regular"
-                                    rounded={true}
-                                    block={false}
-                                    iconOnly={false}
-                                    ripple="light"
-                                    onClick={navigate("/chatpage")}>
-                                    Message
-                                </Button>
-                            }
+                            <Button
+                                color="black"
+                                buttonType="filled"
+                                size="regular"
+                                rounded={true}
+                                block={false}
+                                iconOnly={false}
+                                ripple="light"
+                                onClick={()=>{navigate("/chatpage")}}>
+                                Message
+                            </Button>
+                            {/* {!isLandOwner &&
+                                
+                            } */}
 
                         </div>
                     </div>
                 </div>
+
             </div >
         </>
     );

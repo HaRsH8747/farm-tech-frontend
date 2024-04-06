@@ -9,8 +9,20 @@ function DropdownMenu({ data, fields, fieldNames, onFiltersChange }) {
 
   // Adjusting to use an object for tracking open states of multiple dropdowns
   const [openDropdowns, setOpenDropdowns] = useState(
-    fields.reduce((acc, field) => ({ ...acc, [field]: false }), {})
+    fields.reduce((acc, field) => ({ ...acc, [field]: true }), {})
   );
+  
+
+  useEffect(() => {
+    if (fields.length > 0) {
+      const initialOpenDropdowns = fields.reduce((acc, field, idx) => {
+        acc[field] = idx < 2; // Open the first two fields, close the others
+        return acc;
+      }, {});
+
+      setOpenDropdowns(initialOpenDropdowns);
+    }
+  }, [fields]);
 
   useEffect(() => {
     const newUniqueValues = fields.reduce((acc, field) => {
@@ -58,9 +70,8 @@ function DropdownMenu({ data, fields, fieldNames, onFiltersChange }) {
             <span className="accordion-icon">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className={`h-4 w-4 inline-block transform transition-transform ${
-                  openDropdowns[field] ? "rotate-180" : "rotate-0"
-                }`}
+                className={`h-4 w-4 inline-block transform transition-transform ${openDropdowns[field] ? "rotate-180" : "rotate-0"
+                  }`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -71,9 +82,8 @@ function DropdownMenu({ data, fields, fieldNames, onFiltersChange }) {
             </span>
           </h3>
           <div
-            className={`${
-              openDropdowns[field] ? "block" : "hidden"
-            } transition-all duration-500`}
+            className={`${openDropdowns[field] ? "block" : "hidden"
+              } transition-all duration-500`}
           >
             {uniqueValues[field]?.map((value, index) => (
               <div key={`${field}-${index}`} className="flex items-center mb-2">

@@ -7,31 +7,26 @@ import { useAuth } from './context/authContext/index.js'; // Adjust the import p
 import { HiOutlinePaperAirplane, HiOutlineUserCircle } from 'react-icons/hi'; // For user icons
 
 const ChatPage = ({ farmersInfo }) => {
-    const { currentUser, currentDBUser, setCurrentDBUser } = useAuth();
-    // console.log("Info", farmersInfo);
-
-    // console.log("User Details:", userDetails); // Example usage of userDetails
-
     // State to hold multiple conversations
     const [conversations, setConversations] = useState([]);
     const [currentMessage, setCurrentMessage] = useState('');
     const [activeConversationIndex, setActiveConversationIndex] = useState(0);
     const avatarImage = process.env.PUBLIC_URL + '/images/profile.webp';
 
-    // Assuming 'yourUserName' is the ID of the current user
-    const userIds = ["vatsal11", "keyur", "reza"]; // Example user IDs
-    // const yourUserName = currentUser?.uid;
     const storedDBData = JSON.parse(localStorage.getItem('storedDBData'));
-    // if (storedDBData) {
-    //     setCurrentDBUser(JSON.parse(storedDBData));
-    // }
     const yourUserName = storedDBData?.user_name;
+    let isLandowner = storedDBData.designation == "L" ? true : false;
     useEffect(() => {
-        
+
         farmersInfo.map((user, index) => {
             if (user.username !== yourUserName) {
                 const conversationId = [`${yourUserName}`, `${user.username}`].sort().join("");
-                const messagesRef = collection(firestore, "users", yourUserName, "conversations", conversationId, "messages");
+                let messagesRef;
+                if (!isLandowner) {
+                    messagesRef = collection(firestore, "users", user.username, "conversations", conversationId, "messages");
+                } else {
+                    messagesRef = collection(firestore, "users", yourUserName, "conversations", conversationId, "messages");
+                }
                 const q = query(messagesRef, orderBy("timestamp"));
 
                 const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -44,7 +39,7 @@ const ChatPage = ({ farmersInfo }) => {
 
                     setConversations(prevConversations => {
                         const newConversations = [...prevConversations];
-                        newConversations[index] = { name: `User ${user.username}`, messages };
+                        newConversations[index] = { name: `${user.username}`, messages };
                         return newConversations;
                     });
                 });
@@ -59,7 +54,12 @@ const ChatPage = ({ farmersInfo }) => {
             const activeUserId = farmersInfo[activeConversationIndex];
             const conversationId = [yourUserName, activeUserId.username].sort().join("");
 
-            const messagesRef = collection(firestore, "users", yourUserName, "conversations", conversationId, "messages");
+            let messagesRef;
+            if (!isLandowner) {
+                messagesRef = collection(firestore, "users", activeUserId.username, "conversations", conversationId, "messages");
+            } else {
+                messagesRef = collection(firestore, "users", yourUserName, "conversations", conversationId, "messages");
+            }
 
             try {
                 await addDoc(messagesRef, {
@@ -131,7 +131,8 @@ const ChatPage = ({ farmersInfo }) => {
                     ))}
                 </div>
                 {/* Chat input */}
-                <div className="bg-sky-300 p-4 flex items-center shadow-inner">
+                <div className="sticky bottom-0 bg-sky-300 p-4 flex items-center shadow-inner">
+
                     <input
                         type="text"
                         value={currentMessage}
@@ -146,7 +147,7 @@ const ChatPage = ({ farmersInfo }) => {
                     />
                     <button
                         onClick={handleSendMessage}
-                        className="absolute right-4 rounded-full p-2 bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition shadow hover:scale-105"
+                        className="right-4 rounded-full p-2 bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition shadow hover:scale-105"
                     >
                         <HiOutlinePaperAirplane className="text-xl transform rotate-90" />
                     </button>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Checkbox, Label, TextInput, Textarea, Select } from 'flowbite-react';
 import axios from 'axios'; // Make sure to import Axios at the top of your file
+import { useNavigate } from 'react-router-dom';
 
 // const facilitiesOptions = [
 //   { value: 'irrigation', label: 'Irrigation System' },
@@ -44,6 +45,8 @@ function LandAgreementForm(props) {
 
   const { landOwnerId, farmerId, landId, landOwnerName, farmerName, landAddress } = props.preFormData;
 
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     landOwnerName: landOwnerName,
     farmerName: farmerName,
@@ -64,7 +67,7 @@ function LandAgreementForm(props) {
     if (name === 'decidedCrop') {
       // const selectedOptionIndex = cropList.findIndex(option => option.value === value);
       const selectedOptionIndex = cropList.map((selectedValue, index) => {
-        if(value === selectedValue){
+        if (value === selectedValue) {
           return index;
         }
       });
@@ -85,6 +88,18 @@ function LandAgreementForm(props) {
 
   };
 
+  const updateLandApplicationStatus = async (url, status) => {
+    const data = {
+      status: status
+    };
+    try {
+      const response = await axios.patch(url, data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('error', error);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -100,10 +115,12 @@ function LandAgreementForm(props) {
     };
 
     try {
-      const response = await axios.post("http://192.168.2.18:8000/api/agreements", apiPayload);
-
+      const response = await axios.post("http://127.0.0.1:8000/api/agreements", apiPayload);
+      updateLandApplicationStatus(`http://127.0.0.1:8000/api/landapplications/${landId}`, 'Accepted');
       console.log(response.data); // For debugging, remove or adjust as necessary
       alert('Agreement Submitted Successfully!');
+      navigate('/landapplications')
+
     } catch (error) {
       console.error('Failed to submit agreement:', error);
       alert('Failed to submit agreement. Please try again.');
@@ -114,7 +131,6 @@ function LandAgreementForm(props) {
     <div className="flex justify-center items-center p-4">
       <div className="w-full max-w-4xl mx-auto bg-white rounded-lg shadow p-8">
         <form onSubmit={handleSubmit} className="space-y-6">
-          <h2 className="text-2xl font-semibold mb-5 text-gray-900">Land Agreement Form</h2>
           <div>
             <Label htmlFor="landOwnerName">Land Owner Name</Label>
             <TextInput

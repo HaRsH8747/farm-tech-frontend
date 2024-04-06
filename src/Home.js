@@ -26,15 +26,14 @@ import PageTitle from "./layout/page-title";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Video from "./components/Video";
-import ContactUs from './ContactUs';
+import ContactUs from "./ContactUs";
 
 // import ExploreButton from "./components/explore-button";
 
 export function Home() {
-
   const handleScroll = (anchor) => (e) => {
     e.preventDefault();
-    document.querySelector(anchor).scrollIntoView({ behavior: 'smooth' });
+    document.querySelector(anchor).scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -47,7 +46,7 @@ export function Home() {
         <div>
           <section className="-mt-32 bg-white px-4 pt-4">
             <div className="container mx-auto">
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="mb-24 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {featuresData.map(
                   ({ color, title, icon, description }) => (
                     console.log(icon),
@@ -79,21 +78,22 @@ export function Home() {
                     Our Goal
                   </Typography>
                   <Typography className="mb-8 font-normal text-blue-gray-500">
-                    In the heart of our mission lies the commitment to nurturing a
-                    community where land and ambition thrive in unison. We are
+                    In the heart of our mission lies the commitment to nurturing
+                    a community where land and ambition thrive in unison. We are
                     building a platform that transforms every idle acre into a
                     beacon of sustainability and every harvest into a triumph of
-                    shared prosperity. Our endeavor is to create a robust network
-                    that extends from the soil to the dining table, guaranteeing
-                    that the diligent work of every farmer is met with just rewards.
+                    shared prosperity. Our endeavor is to create a robust
+                    network that extends from the soil to the dining table,
+                    guaranteeing that the diligent work of every farmer is met
+                    with just rewards.
                     <br />
                     <br />
-                    At the forefront of our objectives is the battle against hunger,
-                    striving to achieve the Sustainable Development Goal of zero
-                    hunger. By integrating advanced digital storage solutions and
-                    providing precise crop recommendations through market and
-                    demographic analysis, we are paving the path to a future where
-                    food security is guaranteed for everyone.
+                    At the forefront of our objectives is the battle against
+                    hunger, striving to achieve the Sustainable Development Goal
+                    of zero hunger. By integrating advanced digital storage
+                    solutions and providing precise crop recommendations through
+                    market and demographic analysis, we are paving the path to a
+                    future where food security is guaranteed for everyone.
                   </Typography>
                   <Button variant="filled">read more</Button>
                 </div>
@@ -130,15 +130,23 @@ export function Home() {
                     </CardBody>
                   </Card>
                 </div>
-
               </div>
             </div>
           </section>
         </div>
         <section className="relative bg-white mt-28">
           <div className="container mx-auto">
-            <PageTitle section="Start with Sustainability" heading="Embracing Sustainability"  >
-              In the face of today's climate challenges, experts like Ted Scambos from the National Oceanic and Atmospheric Administration inspire our commitment to sustainable land management. Our platform encourages practices that nourish our planet, leveraging cutting-edge agricultural technology to reduce environmental impact and pave the way for a sustainable future for all.            </PageTitle>
+            <PageTitle
+              section="Start with Sustainability"
+              heading="Embracing Sustainability"
+            >
+              In the face of today's climate challenges, experts like Ted
+              Scambos from the National Oceanic and Atmospheric Administration
+              inspire our commitment to sustainable land management. Our
+              platform encourages practices that nourish our planet, leveraging
+              cutting-edge agricultural technology to reduce environmental
+              impact and pave the way for a sustainable future for all.{" "}
+            </PageTitle>
             <div className="mx-auto mt-20 grid max-w-5xl grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3">
               {contactData.map(({ title, icon, description }) => (
                 <Card
@@ -166,36 +174,20 @@ export function Home() {
         <section id="about" className="px-4 pt-20 mt-10">
           <div className="container mx-auto">
             <PageTitle section="Our Team" heading="Here are our heroes">
-              "Alone we can do so little, together we can do so much"
-              If the team is diligent, then victory should come and help people"
+              "Alone we can do so little, together we can do so much" If the
+              team is diligent, then victory should come and help people"
             </PageTitle>
-            <div className="mt-24 grid grid-cols-1 gap-12 gap-x-24 md:grid-cols-2 xl:grid-cols-4">
-              {teamData.map(({ img, name, position, socials }) => (
-                <TeamCard
-                  key={name}
-                  img={img}
-                  name={name}
-                  position={position}
-                  socials={
-                    <div className="flex items-center gap-2">
-                      {socials.map(({ color, name }) => (
-                        <IconButton key={name} color={color} variant="text">
-                          <i className={`fa-brands text-xl fa-${name}`} />
-                        </IconButton>
-                      ))}
-                    </div>
-                  }
-                />
+            <div className="mt-24 grid grid-cols-1 gap-12 gap-x-28 md:grid-cols-2 xl:grid-cols-4">
+              {teamData.map(({ img, name }) => (
+                <TeamCard key={name} img={img} name={name} />
               ))}
             </div>
           </div>
         </section>
-
       </div>
       <section id="contact" className="h-screen">
         <ContactUs />
       </section>
-
     </>
   );
 }

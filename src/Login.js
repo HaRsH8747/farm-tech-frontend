@@ -48,7 +48,7 @@ const LoginComponant = () => {
 
                     const config = {
                         method: 'post',
-                        url: 'http://192.168.2.18:8000/login/',
+                        url: 'http://127.0.0.1:8000/login/',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
                             'Cookie': 'csrftoken=Q10eo92VTUqH3eLEtYyYOD5bKGAkL9ix'
@@ -63,7 +63,7 @@ const LoginComponant = () => {
                                 const userData = response.data; // Assuming the server returns user data
                                 setCurrentUserId(userData.user_id);
 
-                                const response2 = axios.get('http://192.168.2.18:8000/api/extendedusers', {
+                                const response2 = axios.get('http://127.0.0.1:8000/api/extendedusers', {
                                     headers: {
                                         'Content-Type': 'application/json'
                                     }
@@ -93,7 +93,7 @@ const LoginComponant = () => {
                             console.log('error', error);
                         });
 
-                    // const response = await axios.post('http://192.168.2.18:8000/login/', {
+                    // const response = await axios.post('http://127.0.0.1:8000/login/', {
                     //     email: email,
                     //     password: password
                     // }, {
@@ -122,102 +122,47 @@ const LoginComponant = () => {
 
     return (
         <>
-            <div className="flex justify-center items-center min-h-screen bg-cover bg-center" style={{ backgroundImage: `url('path/to/your/background.jpg')` }}>
-                <div className="w-full h-screen flex flex-col justify-center">
-                    <Login>
-                        <Logo>
-                        <img src="/login.jpg" style={{ width: '100px', height: 'auto' }} />
 
-                        </Logo>
-                        <Welcome>Welcome back! Log in to your account.</Welcome>
-
-                        {/* Custom Email input, renamed to "phone", with additional customization */}
-                        <Email type="email"
-                            name="email"
-                            placeholder="Email"
-                            required onChange={(e) => setEmail(e.target.value)} >
-                            <div>xx</div> {/* This might not be supported depending on how Email component is implemented */}
-                        </Email>
-
-                        {/* Password field with specified control properties */}
-                        <Password type="password"
-                            name="password"
-                            placeholder="Password"
-                            required onChange={(e) => setPassword(e.target.value)} index={2} />
-                        {/* Example showing how to conditionally render Password based on a prop */}
-                        {/* <Password index={2} visible={false} /> */}
-
-                        {/* Submission and reset buttons */}
-                        <Submit onClick={handleLogin} />
-                        <Reset />
-
-                        {/* Additional content placed after the submit/reset buttons */}
-                        {/* <ButtonAfter>
-                    Forgot <a href="#">Username / Password?</a>
-                </ButtonAfter> */}
-                    </Login>
-
+            <div class="bg-gray-100 flex justify-center items-center h-screen">
+                <div class="w-1/2 h-screen hidden lg:block">
+                    <img src="/img/login.jpg" alt="Placeholder Image" class="object-cover w-full h-full" />
                 </div>
-            </div >
-            {/* <div className="flex">
-                <div className="2xl:w-[60%] xl:w-[50%] lg:w-[50%] md:w-[50%] sm:w-[50%] w-0">
-                    <img src="/img/hero.jpg" className="h-[100vh]" />
-                </div>
-                <div className="2xl:w-[40%] xl:w-[50%] lg:w-[50%] md:w-[50%] sm:w-[50%] w-full">
-                    <div className="my-[109px] mx-[70px] login-style shadow-style">
-                        <div className="flex justify-center items-center">
-                            <div className="text-2xl font-bold mb-5">login</div>
-                        </div>
-
-                        <div className="">
-                            <div className="text-lg mb-1 text-gray-500">email</div>
-                            <TextInput
-                                className="input-style bg-gray-100 hover:bg-slate-100"
-                                type="email"
+                <div class="lg:p-36 md:p-52 sm:20 p-8 w-full lg:w-1/2">
+                    <h1 class="text-2xl font-semibold mb-4">Login</h1>
+                    <form action="#" method="POST">
+                        <div class="mb-4">
+                            <label for="username" class="block text-gray-600">Username</label>
+                            <input type="email"
                                 name="email"
                                 placeholder="Email"
-                                required onChange={(e) => setEmail(e.target.value)}
-                            />
+                                required onChange={(e) => setEmail(e.target.value)} class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" autocomplete="off" />
                         </div>
-
-                        <div className="mb-4">
-                            <div className="text-lg mb-1 text-gray-500">Password</div>
-                            <TextInput
-                                className="input-style bg-gray-100 hover:bg-slate-100"
-                                type="password"
+                        <div class="mb-4">
+                            <label for="password" class="block text-gray-600">Password</label>
+                            <input type="password"
                                 name="password"
                                 placeholder="Password"
-                                required onChange={(e) => setPassword(e.target.value)}
-                            />
-                            <div className="flex justify-end text-sm mb-1 text-gray-500 hover:text-gray-800 underline underline-offset-1 cursor-pointer">Forgot Password</div>
-
+                                required onChange={(e) => setPassword(e.target.value)} class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" autocomplete="off" />
                         </div>
-
-                        <div className="mb-8">
-                            <div className="flex items-center">
-                                <TextInput
-                                    className="h-[20px] w-[18px] mr-4"
-                                    type="checkbox"
-                                    name="checkbox"
-                                    value="1"
-                                    placeholder="Password"
-
-                                />
-                                <div>Remember Me!</div>
-                            </div>
+                        <div class="mb-4 flex items-center">
+                            <input type="checkbox" id="remember" name="remember" class="text-blue-500" />
+                            <label for="remember" class="text-gray-600 ml-2">Remember Me</label>
                         </div>
-
-                        <button className="button-style bg-gray-700 hover:bg-black" onClick={handleLogin}>Submit</button>
-
-                        <div className="flex justify-end text-sm mb-1 text-gray-500 hover:text-gray-800 underline underline-offset-1 cursor-pointer" onClick={() => { navigate("/register") }}>Create Account</div>
+                        <div class="mb-6 text-blue-500">
+                            <a href="#" class="hover:underline">Forgot Password?</a>
+                        </div>
+                        <button onClick={handleLogin} type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full">Login</button>
+                    </form>
+                    <div class="mt-6 text-blue-500 text-center">
+                        <a href="#" onClick={() => { navigate("/register") }} class="hover:underline">Sign up Here</a>
                     </div>
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <button className="button-style bg-gray-700 hover:bg-black" onClick={() => { navigate("/") }}>Go to home</button>
+                    <div class="mt-6 text-blue-500 text-center">
+                        <a href="#" onClick={() => { navigate("/") }} class="hover:underline">Back to Home</a>
                     </div>
                 </div>
-            </div> */}
-            < PopUp isVisible={popUp.isVisible} message={popUp.message} onClose={() => setPopUp({ isVisible: false, message: '' })} />
+                < PopUp isVisible={popUp.isVisible} message={popUp.message} onClose={() => setPopUp({ isVisible: false, message: '' })} />
 
+            </div>
         </>
     );
 };
