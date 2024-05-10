@@ -57,10 +57,6 @@ The project addresses two major challenges in Canadian agriculture: the underuti
 
 Detailed installation and usage instructions can be found in the respective repository README files.
 
-## Contributing
-
-Contributions are welcome! Please follow the guidelines in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
